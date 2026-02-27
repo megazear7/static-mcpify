@@ -10,7 +10,7 @@
     "build:ts": "tsc",
     "build:contentful": "tsx src/cli/index.ts build --output examples/contentful",
     "build": "npm run build:ts && npm run build:contentful",
-    "start": "concurrently --names static,contentful,brand \"tsx src/server/standalone.ts examples/static 3100\" \"tsx src/server/standalone.ts examples/contentful 3101\" \"cd brand && npx serve -l 3102\"",
+    "start": "concurrently --names static,contentful,brand \"tsx src/server/standalone.ts examples/static/content 3100\" \"tsx src/server/standalone.ts examples/contentful/content 3101\" \"cd brand && npx serve -l 3102\"",
     "test": "tsx test/sanity.ts",
     "fix": "eslint --fix 'src/**/*.ts' 'netlify/**/*.ts' 'test/**/*.ts'",
     "lint": "eslint 'src/**/*.ts' 'netlify/**/*.ts' 'test/**/*.ts'"

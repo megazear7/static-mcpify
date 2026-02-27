@@ -13,6 +13,56 @@ function toSlug(text: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
+/**
+ * Safely serialize a value to a JSON-compatible structure,
+ * replacing circular references and stripping resolved linked entries
+ * down to their sys metadata.
+ */
+function safeClone(value: unknown, seen = new WeakSet<object>()): unknown {
+  if (value === null || value === undefined) return value;
+  if (typeof value !== 'object') return value;
+
+  const obj = value as Record<string, unknown>;
+
+  // Detect circular references
+  if (seen.has(obj)) return '[Circular]';
+  seen.add(obj);
+
+  // If this is a resolved Contentful entry/asset (has sys.type === 'Entry' or 'Asset'),
+  // flatten it to avoid deep circular nesting
+  if (obj.sys && typeof obj.sys === 'object') {
+    const sys = obj.sys as Record<string, unknown>;
+    if (sys.type === 'Entry') {
+      return {
+        sys: { id: sys.id, type: sys.type, contentType: sys.contentType },
+        title: obj.fields && typeof obj.fields === 'object'
+          ? ((obj.fields as Record<string, unknown>).title ??
+             (obj.fields as Record<string, unknown>).name ??
+             sys.id)
+          : sys.id,
+      };
+    }
+    if (sys.type === 'Asset') {
+      const fields = obj.fields as Record<string, unknown> | undefined;
+      return {
+        sys: { id: sys.id, type: sys.type },
+        title: fields?.title,
+        file: fields?.file ? safeClone(fields.file, seen) : undefined,
+      };
+    }
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map((item) => safeClone(item, seen));
+  }
+
+  const result: Record<string, unknown> = {};
+  for (const [key, val] of Object.entries(obj)) {
+    result[key] = safeClone(val, seen);
+  }
+  return result;
+}
+
 function isRichTextField(value: unknown): boolean {
   return (
     typeof value === 'object' &&
@@ -97,12 +147,12 @@ function fieldToMarkdown(key: string, value: unknown): string {
   }
 
   if (Array.isArray(value)) {
-    const items = value.map((v) => (typeof v === 'string' ? v : JSON.stringify(v)));
+    const items = value.map((v) => (typeof v === 'string' ? v : JSON.stringify(safeClone(v))));
     return `## ${key}\n\n${items.map((i) => `- ${i}`).join('\n')}\n\n`;
   }
 
   if (typeof value === 'object') {
-    return `## ${key}\n\n\`\`\`json\n${JSON.stringify(value, null, 2)}\n\`\`\`\n\n`;
+    return `## ${key}\n\n\`\`\`json\n${JSON.stringify(safeClone(value), null, 2)}\n\`\`\`\n\n`;
   }
 
   return `## ${key}\n\n${String(value)}\n\n`;
@@ -156,7 +206,7 @@ export class ContentfulAdapter implements SourceAdapter {
         entry.sys.id;
       const slug = toSlug(title);
 
-      // Build data.json: all fields except rich text
+      // Build data.json: all fields except rich text, with safe serialization
       const data: Record<string, unknown> = {
         id: entry.sys.id,
         contentType,
@@ -166,7 +216,7 @@ export class ContentfulAdapter implements SourceAdapter {
       };
       for (const [key, value] of Object.entries(fields)) {
         if (!isRichTextField(value)) {
-          data[key] = value;
+          data[key] = safeClone(value);
         }
       }
 
