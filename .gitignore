@@ -3,4 +3,7 @@ node_modules/
 dist/
 *.tsbuildinfo
 .netlify/
-examples/contentful/content/
+
+# Contentful example: ignore built content but keep config files
+examples/contentful/content/assets/
+examples/contentful/content/entries/*/*/

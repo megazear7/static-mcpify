@@ -1,0 +1,9 @@
+{
+  "contentType": "adventure",
+  "tools": [
+    {
+      "name": "description",
+      "fields": ["description"]
+    }
+  ]
+}

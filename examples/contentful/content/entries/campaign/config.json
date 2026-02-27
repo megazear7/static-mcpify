@@ -1,0 +1,9 @@
+{
+  "contentType": "campaign",
+  "tools": [
+    {
+      "name": "description",
+      "fields": ["description"]
+    }
+  ]
+}
