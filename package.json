@@ -2,9 +2,38 @@
   "name": "static-mcpify",
   "version": "1.0.0",
   "type": "module",
+  "description": "Turn any structured content into a static MCP (Model Context Protocol) server",
   "main": "dist/src/server/index.js",
+  "exports": {
+    ".": "./dist/src/server/index.js",
+    "./server": "./dist/src/server/index.js",
+    "./handler": "./dist/src/server/handler.js"
+  },
   "bin": {
     "smcp": "./dist/src/cli/index.js"
+  },
+  "files": [
+    "dist/src/**/*.js",
+    "dist/src/**/*.d.ts",
+    "dist/src/**/*.js.map",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "contentful",
+    "cms",
+    "static",
+    "ai",
+    "llm",
+    "tools"
+  ],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexlockhart/static-mcpify.git"
   },
   "scripts": {
     "build:ts": "tsc",
@@ -13,12 +42,9 @@
     "start": "concurrently --names static,contentful,brand \"tsx src/server/standalone.ts examples/static/content 3100\" \"tsx src/server/standalone.ts examples/contentful/content 3101\" \"cd brand && npx serve -l 3102\"",
     "test": "tsx test/sanity.ts",
     "fix": "eslint --fix 'src/**/*.ts' 'netlify/**/*.ts' 'test/**/*.ts'",
-    "lint": "eslint 'src/**/*.ts' 'netlify/**/*.ts' 'test/**/*.ts'"
+    "lint": "eslint 'src/**/*.ts' 'netlify/**/*.ts' 'test/**/*.ts'",
+    "prepublishOnly": "npm run build:ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "@contentful/rich-text-html-renderer": "^17.1.6",
     "@contentful/rich-text-types": "^17.2.5",
