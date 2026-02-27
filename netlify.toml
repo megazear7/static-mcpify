@@ -1,0 +1,16 @@
+[build]
+  publish = "brand"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/example/static/mcp"
+  to = "/.netlify/functions/static-mcp"
+  status = 200
+
+[[redirects]]
+  from = "/example/contentful/mcp"
+  to = "/.netlify/functions/contentful-mcp"
+  status = 200

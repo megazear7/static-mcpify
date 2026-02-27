@@ -1,2 +1,6 @@
 .env
 node_modules/
+dist/
+*.tsbuildinfo
+.netlify/
+examples/contentful/content/

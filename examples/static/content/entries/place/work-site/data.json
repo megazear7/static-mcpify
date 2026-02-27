@@ -1,0 +1,20 @@
+{
+  "id": "place-001",
+  "contentType": "place",
+  "title": "Work Site",
+  "createdAt": "2024-03-01T08:00:00Z",
+  "updatedAt": "2024-08-10T16:20:00Z",
+  "name": "Work Site",
+  "type": "Co-working Space",
+  "location": "Denver, CO",
+  "capacity": 500,
+  "amenities": [
+    "High-speed Internet",
+    "24/7 Access",
+    "Café",
+    "Rooftop Terrace",
+    "Meeting Rooms",
+    "Podcast Studio"
+  ],
+  "website": "https://theworksite.co"
+}

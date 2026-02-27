@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>static-mcpify — Build Static MCP Servers from Any Content Source</title>
+  <meta name="description" content="Transform structured content into powerful MCP (Model Context Protocol) servers. Pull from Contentful, deploy anywhere.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-brand">
+        <span class="nav-logo">⚡</span>
+        <span class="nav-name">static-mcpify</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#contentful">Contentful</a>
+        <a href="#deploy">Deploy</a>
+        <a href="https://github.com" class="nav-cta">GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+      <div class="hero-badge">Open Source &middot; TypeScript &middot; MCP</div>
+      <h1 class="hero-title">
+        Turn <span class="gradient-text">any content</span> into an
+        <span class="gradient-text">MCP server</span>
+      </h1>
+      <p class="hero-subtitle">
+        static-mcpify pulls structured content from your CMS, builds it into static files,
+        and serves them as a fully-featured
+        <strong>Model Context Protocol</strong> server. Your AI agents get instant access
+        to your content — no database, no runtime dependencies.
+      </p>
+      <div class="hero-actions">
+        <a href="#how-it-works" class="btn btn-primary">Get Started</a>
+        <a href="#features" class="btn btn-secondary">Learn More</a>
+      </div>
+      <div class="hero-code">
+        <div class="code-header">
+          <span class="code-dot red"></span>
+          <span class="code-dot yellow"></span>
+          <span class="code-dot green"></span>
+          <span class="code-title">Terminal</span>
+        </div>
+        <pre><code><span class="code-comment"># Initialize your content structure</span>
+<span class="code-prompt">$</span> npx smcp init --output my-mcp
+
+<span class="code-comment"># Pull content and build static files</span>
+<span class="code-prompt">$</span> npx smcp build --output my-mcp
+
+<span class="code-comment"># Your MCP server is ready! 🚀</span></code></pre>
+      </div>
+    </div>
+  </header>
+
+  <!-- Features -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Built for the <span class="gradient-text">AI era</span></h2>
+        <p class="section-subtitle">Everything you need to bridge your content with AI agents</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📦</div>
+          <h3>Static by Design</h3>
+          <p>Content is pre-built into static files. No database queries at runtime. Lightning fast responses for your AI agents.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔌</div>
+          <h3>Pluggable Sources</h3>
+          <p>Built with an adapter pattern. Contentful support out of the box, with room to add any content source you need.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3>MCP Native</h3>
+          <p>Implements the Model Context Protocol with streamable HTTP transport. Works with any MCP-compatible AI client.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛠️</div>
+          <h3>Dynamic Tools</h3>
+          <p>Tools are auto-generated from your content structure. List entries, get details, and access specific content fields.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>Deploy Anywhere</h3>
+          <p>Runs on any Node.js server, serverless functions, or edge runtime. First-class Netlify support included.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📝</div>
+          <h3>TypeScript First</h3>
+          <p>Full TypeScript codebase with Zod validation. Type-safe from config to runtime, with descriptive error messages.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how-it-works" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">How it <span class="gradient-text">works</span></h2>
+        <p class="section-subtitle">Three simple steps from content to AI-accessible MCP server</p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">01</div>
+          <div class="step-content">
+            <h3>Initialize</h3>
+            <p>Run <code>smcp init</code> to set up your output directory. Choose your content types and define which fields power each tool.</p>
+            <div class="step-code">
+              <pre><code><span class="code-prompt">$</span> npx smcp init --output my-mcp
+
+<span class="code-comment"># Creates:</span>
+<span class="code-comment">#   my-mcp/config.json</span>
+<span class="code-comment">#   my-mcp/content/entries/&lt;type&gt;/config.json</span>
+<span class="code-comment">#   my-mcp/content/assets/</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">02</div>
+          <div class="step-content">
+            <h3>Build</h3>
+            <p>Run <code>smcp build</code> to pull content from your CMS and generate markdown files, data.json files, and download assets.</p>
+            <div class="step-code">
+              <pre><code><span class="code-prompt">$</span> npx smcp build --output my-mcp
+
+<span class="code-comment"># Generates per entry:</span>
+<span class="code-comment">#   content/entries/person/bob-smith/data.json</span>
+<span class="code-comment">#   content/entries/person/bob-smith/tools/biography.md</span>
+<span class="code-comment">#   content/entries/person/bob-smith/tools/skills.md</span></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">03</div>
+          <div class="step-content">
+            <h3>Serve</h3>
+            <p>The MCP server reads your static files and auto-generates tools. Connect any MCP client and start querying.</p>
+            <div class="step-code">
+              <pre><code><span class="code-comment"># Auto-generated MCP tools:</span>
+list_person      <span class="code-comment"># Filter & list people</span>
+get_person       <span class="code-comment"># Get person data.json</span>
+get_person_biography  <span class="code-comment"># Get biography markdown</span>
+get_person_skills     <span class="code-comment"># Get skills markdown</span>
+list_assets      <span class="code-comment"># List all assets</span>
+get_asset        <span class="code-comment"># Get asset info</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="file-structure">
+        <h3>📁 Output Structure</h3>
+        <pre><code>my-mcp/
+├── config.json                          <span class="code-comment"># Source configuration</span>
+└── content/
+    ├── assets/                          <span class="code-comment"># Downloaded assets</span>
+    │   └── photo.png
+    └── entries/
+        ├── person/
+        │   ├── config.json              <span class="code-comment"># Tools: biography, skills</span>
+        │   ├── bob-smith/
+        │   │   ├── data.json            <span class="code-comment"># All non-rich-text fields</span>
+        │   │   └── tools/
+        │   │       ├── biography.md     <span class="code-comment"># Rich text → Markdown</span>
+        │   │       └── skills.md
+        │   └── steve-baker/
+        │       ├── data.json
+        │       └── tools/
+        │           ├── biography.md
+        │           └── skills.md
+        └── place/
+            ├── config.json
+            └── work-site/
+                ├── data.json
+                └── tools/
+                    └── description.md</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contentful -->
+  <section id="contentful" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="gradient-text">Contentful</span> as a source
+        </h2>
+        <p class="section-subtitle">First-class integration with the Contentful CMS</p>
+      </div>
+
+      <div class="two-col">
+        <div class="col-text">
+          <h3>Setup in minutes</h3>
+          <ol class="setup-steps">
+            <li>
+              <strong>Set environment variables</strong>
+              <p>Add your Contentful API token and Space ID to a <code>.env</code> file.</p>
+            </li>
+            <li>
+              <strong>Initialize</strong>
+              <p>Run <code>smcp init --output my-mcp</code>. The CLI will connect to your Contentful space, show you all available content types, and let you pick which fields to expose as tools.</p>
+            </li>
+            <li>
+              <strong>Build</strong>
+              <p>Run <code>smcp build --output my-mcp</code>. All entries are pulled, rich text fields converted to markdown, and assets downloaded.</p>
+            </li>
+            <li>
+              <strong>Deploy</strong>
+              <p>Push to Netlify (or any server) and your MCP endpoint is live.</p>
+            </li>
+          </ol>
+        </div>
+        <div class="col-code">
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-dot red"></span>
+              <span class="code-dot yellow"></span>
+              <span class="code-dot green"></span>
+              <span class="code-title">.env</span>
+            </div>
+            <pre><code>CONTENTFUL_API_TOKEN=nP...your_token...mo
+SPACE_ID=1x...your_space...mb</code></pre>
+          </div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-dot red"></span>
+              <span class="code-dot yellow"></span>
+              <span class="code-dot green"></span>
+              <span class="code-title">my-mcp/content/entries/blog/config.json</span>
+            </div>
+            <pre><code>{
+  "contentType": "blog",
+  "tools": [
+    {
+      "name": "summary",
+      "fields": ["summary", "tags"]
+    },
+    {
+      "name": "body",
+      "fields": ["body"]
+    }
+  ]
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="contentful-features">
+        <div class="cf-feature">
+          <strong>Rich Text Conversion</strong>
+          <p>Contentful rich text fields are automatically converted to clean Markdown for optimal AI consumption.</p>
+        </div>
+        <div class="cf-feature">
+          <strong>Asset Downloads</strong>
+          <p>Referenced images and files are automatically downloaded to the local assets directory.</p>
+        </div>
+        <div class="cf-feature">
+          <strong>Selective Building</strong>
+          <p>Use <code>--content-type</code> flags to rebuild only specific content types.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deploy -->
+  <section id="deploy" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Deploy to <span class="gradient-text">Netlify</span></h2>
+        <p class="section-subtitle">Serverless MCP endpoints in seconds</p>
+      </div>
+
+      <div class="deploy-content">
+        <div class="deploy-steps">
+          <div class="deploy-step">
+            <div class="deploy-step-icon">1</div>
+            <div>
+              <h3>Add netlify.toml</h3>
+              <p>Configure your build and function settings. static-mcpify includes a ready-made configuration.</p>
+            </div>
+          </div>
+          <div class="deploy-step">
+            <div class="deploy-step-icon">2</div>
+            <div>
+              <h3>Create Netlify Functions</h3>
+              <p>Each MCP endpoint is a Netlify function that serves content from your static files.</p>
+            </div>
+          </div>
+          <div class="deploy-step">
+            <div class="deploy-step-icon">3</div>
+            <div>
+              <h3>Push & Deploy</h3>
+              <p>Connect your repo to Netlify and deploy. Your MCP server is live at <code>/example/static/mcp</code>.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block deploy-code">
+          <div class="code-header">
+            <span class="code-dot red"></span>
+            <span class="code-dot yellow"></span>
+            <span class="code-dot green"></span>
+            <span class="code-title">netlify.toml</span>
+          </div>
+          <pre><code>[build]
+  publish = "brand"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/example/static/mcp"
+  to = "/.netlify/functions/static-mcp"
+  status = 200
+
+[[redirects]]
+  from = "/example/contentful/mcp"
+  to = "/.netlify/functions/contentful-mcp"
+  status = 200</code></pre>
+        </div>
+
+        <div class="code-block deploy-code">
+          <div class="code-header">
+            <span class="code-dot red"></span>
+            <span class="code-dot yellow"></span>
+            <span class="code-dot green"></span>
+            <span class="code-title">netlify/functions/static-mcp.ts</span>
+          </div>
+          <pre><code>import { createMcpServer } from '../../src/server/index.js';
+
+<span class="code-comment">// The server reads your content directory</span>
+<span class="code-comment">// and auto-generates MCP tools</span>
+const server = createMcpServer(contentDir);
+
+<span class="code-comment">// Connect transport and handle requests</span>
+await server.connect(transport);
+await transport.handleRequest(req, res, body);</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section cta-section">
+    <div class="container">
+      <h2 class="cta-title">Ready to <span class="gradient-text">mcpify</span> your content?</h2>
+      <p class="cta-subtitle">Get started in under 5 minutes. Open source, free forever.</p>
+      <div class="hero-actions">
+        <a href="https://github.com" class="btn btn-primary">View on GitHub</a>
+        <a href="#how-it-works" class="btn btn-secondary">Read the Docs</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="nav-logo">⚡</span>
+          <span>static-mcpify</span>
+        </div>
+        <p class="footer-text">Built with TypeScript, MCP SDK, and lots of ☕</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

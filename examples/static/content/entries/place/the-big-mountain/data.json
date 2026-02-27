@@ -1,0 +1,20 @@
+{
+  "id": "place-002",
+  "contentType": "place",
+  "title": "The Big Mountain",
+  "createdAt": "2024-03-15T12:00:00Z",
+  "updatedAt": "2024-09-01T09:15:00Z",
+  "name": "The Big Mountain",
+  "type": "Mountain Peak",
+  "location": "Colorado Rockies, CO",
+  "elevation": 14259,
+  "activities": [
+    "Hiking",
+    "Rock Climbing",
+    "Backcountry Skiing",
+    "Wildlife Viewing",
+    "Photography"
+  ],
+  "annualVisitors": 100000,
+  "managedBy": "National Forest Service"
+}
