@@ -1,6 +1,6 @@
 import type { Context } from '@netlify/functions';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import { createMcpServer } from '../../src/server/index.js';
+import { createMcpServer } from 'static-mcpify';
 import path from 'path';
 import { fileURLToPath } from 'url';
 

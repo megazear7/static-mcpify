@@ -23,7 +23,8 @@
         <a href="#how-it-works">How It Works</a>
         <a href="#contentful">Contentful</a>
         <a href="#deploy">Deploy</a>
-        <a href="https://github.com" class="nav-cta">GitHub</a>
+        <a href="https://www.npmjs.com/package/static-mcpify" class="nav-cta">npm</a>
+        <a href="https://github.com/alexlockhart/static-mcpify" class="nav-cta">GitHub</a>
       </div>
     </div>
   </nav>
@@ -346,7 +347,7 @@ SPACE_ID=1x...your_space...mb</code></pre>
             <span class="code-dot green"></span>
             <span class="code-title">netlify/functions/static-mcp.ts</span>
           </div>
-          <pre><code>import { createMcpServer } from '../../src/server/index.js';
+          <pre><code>import { createMcpServer } from 'static-mcpify';
 
 <span class="code-comment">// The server reads your content directory</span>
 <span class="code-comment">// and auto-generates MCP tools</span>
@@ -366,7 +367,8 @@ await transport.handleRequest(req, res, body);</code></pre>
       <h2 class="cta-title">Ready to <span class="gradient-text">mcpify</span> your content?</h2>
       <p class="cta-subtitle">Get started in under 5 minutes. Open source, free forever.</p>
       <div class="hero-actions">
-        <a href="https://github.com" class="btn btn-primary">View on GitHub</a>
+        <a href="https://www.npmjs.com/package/static-mcpify" class="btn btn-primary">Install from npm</a>
+        <a href="https://github.com/alexlockhart/static-mcpify" class="btn btn-secondary">View on GitHub</a>
         <a href="#how-it-works" class="btn btn-secondary">Read the Docs</a>
       </div>
     </div>
@@ -381,6 +383,7 @@ await transport.handleRequest(req, res, body);</code></pre>
           <span>static-mcpify</span>
         </div>
         <p class="footer-text">Built with TypeScript, MCP SDK, and lots of ☕</p>
+        <p class="footer-text">Made by <a href="https://www.alexlockhart.me/" style="color: #888;">Alex Lockhart</a></p>
       </div>
     </div>
   </footer>

@@ -1,5 +1,7 @@
 # static-mcpify
 
+[![npm version](https://badge.fury.io/js/static-mcpify.svg)](https://www.npmjs.com/package/static-mcpify)
+
 Turn any structured content into a static **MCP (Model Context Protocol)** server.
 
 `static-mcpify` pulls content from your CMS (currently Contentful), builds it into static Markdown and JSON files, then serves those files as a fully-featured MCP server. Your AI agents get instant access to your content — no database, no runtime dependencies.
@@ -9,7 +11,7 @@ Turn any structured content into a static **MCP (Model Context Protocol)** serve
 ### 1. Install
 
 ```bash
-npm install
+npm install static-mcpify
 ```
 
 ### 2. Initialize
@@ -24,7 +26,7 @@ SPACE_ID=your_space_id_here
 Run the init wizard to choose content types and configure tools:
 
 ```bash
-npx tsx src/cli/index.ts init --output my-mcp
+npx smcp init --output my-mcp
 ```
 
 ### 3. Build
@@ -32,21 +34,32 @@ npx tsx src/cli/index.ts init --output my-mcp
 Pull content from Contentful and generate static files:
 
 ```bash
-npx tsx src/cli/index.ts build --output my-mcp
+npx smcp build --output my-mcp
 ```
 
 Build specific content types only:
 
 ```bash
-npx tsx src/cli/index.ts build --output my-mcp --content-type blog --content-type author
+npx smcp build --output my-mcp --content-type blog --content-type author
 ```
 
 ### 4. Serve
 
-Start the MCP server locally:
+Create a simple server to host your MCP endpoint:
 
-```bash
-npx tsx src/server/standalone.ts my-mcp/content 3000
+```javascript
+import { handleMcpRequest } from 'static-mcpify/handler';
+import express from 'express';
+
+const app = express();
+
+app.post('/mcp', express.json(), async (req, res) => {
+  await handleMcpRequest('./my-mcp/content', req, res);
+});
+
+app.listen(3000, () => {
+  console.log('MCP server running at http://localhost:3000/mcp');
+});
 ```
 
 Your MCP server is running at `http://localhost:3000/mcp`.
@@ -209,3 +222,7 @@ test/              # Sanity tests
 ## License
 
 ISC
+
+---
+
+Made by [Alex Lockhart](https://www.alexlockhart.me/)
