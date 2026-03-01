@@ -1,0 +1,8 @@
+{
+  "name": "static-mcpify-site",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "static-mcpify": "*"
+  }
+}

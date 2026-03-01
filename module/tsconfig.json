@@ -13,12 +13,8 @@
     "resolveJsonModule": true,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "sourceMap": true
   },
-  "include": ["src/**/*", "netlify/**/*"],
-  "exclude": ["node_modules", "dist", "brand", "examples"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

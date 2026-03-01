@@ -6,10 +6,10 @@ description: Add a new content source adapter
 
 To add a new content source (e.g., Sanity, Strapi, WordPress):
 
-1. Create a new directory: `src/cli/sources/<source-name>/`
-2. Implement the `SourceAdapter` interface from `src/cli/sources/adapter.ts`
-3. Register the adapter in `src/cli/sources/index.ts`
-4. Add `<source-name>` to the `OutputConfigSchema` source enum in `src/types/config.ts`
+1. Create a new directory: `module/src/cli/sources/<source-name>/`
+2. Implement the `SourceAdapter` interface from `module/src/cli/sources/adapter.ts`
+3. Register the adapter in `module/src/cli/sources/index.ts`
+4. Add `<source-name>` to the `OutputConfigSchema` source enum in `module/src/types/config.ts`
 5. Update the init command if the new source needs special setup
 6. Add tests and update documentation
 

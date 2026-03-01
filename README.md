@@ -191,7 +191,7 @@ The project includes first-class Netlify support:
 2. The `netlify.toml` configures routing:
    - `/example/static/mcp` → Static example MCP server
    - `/example/contentful/mcp` → Contentful example MCP server
-3. The brand website is served from `brand/`
+3. The brand website is served from `netlify/brand/`
 
 Just connect your repo to Netlify and deploy.
 
@@ -225,25 +225,30 @@ Try the hosted example MCP servers by adding these to your VS Code `mcp.json`:
 
 To add support for a new CMS (e.g., Sanity, Strapi):
 
-1. Create `src/cli/sources/<name>/index.ts`
-2. Implement the `SourceAdapter` interface from `src/cli/sources/adapter.ts`
-3. Register it in `src/cli/sources/index.ts`
-4. Add the source name to the Zod enum in `src/types/config.ts`
+1. Create `module/src/cli/sources/<name>/index.ts`
+2. Implement the `SourceAdapter` interface from `module/src/cli/sources/adapter.ts`
+3. Register it in `module/src/cli/sources/index.ts`
+4. Add the source name to the Zod enum in `module/src/types/config.ts`
 
 ## Architecture
 
 ```
-src/
-├── types/         # Zod schemas and TypeScript types
-├── cli/           # smcp CLI tool
-│   ├── commands/  # init and build commands
-│   └── sources/   # Source adapters (pluggable)
-│       └── contentful/
-└── server/        # MCP server
-brand/             # Static brand website
-netlify/functions/ # Netlify serverless handlers
-examples/          # Example content and configs
-test/              # Sanity tests
+module/                # Publishable npm package (static-mcpify)
+├── src/
+│   ├── types/         # Zod schemas and TypeScript types
+│   ├── cli/           # smcp CLI tool
+│   │   ├── commands/  # init and build commands
+│   │   └── sources/   # Source adapters (pluggable)
+│   │       └── contentful/
+│   └── server/        # MCP server
+├── package.json
+└── tsconfig.json
+netlify/               # Brand website and hosted examples
+├── brand/             # Static brand website
+├── functions/         # Netlify serverless handlers
+└── package.json
+examples/              # Example content and configs
+test/                  # Sanity tests
 ```
 
 ## License

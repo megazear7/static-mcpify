@@ -1,8 +1,8 @@
 import type { Context } from '@netlify/functions';
-import { handleMcpRequest } from '../../src/server/handler.js';
+import { handleMcpRequest } from 'static-mcpify/handler';
 import path from 'path';
 
-const contentDir = path.join(process.cwd(), 'examples/static/content');
+const contentDir = path.join(process.cwd(), 'examples/contentful/content');
 
 export default async (req: Request, _context: Context): Promise<Response> => {
   if (req.method === 'GET') {
@@ -63,5 +63,5 @@ export default async (req: Request, _context: Context): Promise<Response> => {
 
 export const config = {
   path: '/example/contentful/mcp',
-  includedFiles: ['examples/contentful/content/**'],
+  includedFiles: ['../../examples/contentful/content/**'],
 };

@@ -119,14 +119,14 @@ async function main() {
   await startServer(
     'static',
     'npx',
-    ['tsx', 'src/server/standalone.ts', 'examples/static/content', String(STATIC_PORT)],
+    ['tsx', 'module/src/server/standalone.ts', 'examples/static/content', String(STATIC_PORT)],
     STATIC_PORT
   );
 
   await startServer(
     'contentful',
     'npx',
-    ['tsx', 'src/server/standalone.ts', 'examples/contentful/content', String(CONTENTFUL_PORT)],
+    ['tsx', 'module/src/server/standalone.ts', 'examples/contentful/content', String(CONTENTFUL_PORT)],
     CONTENTFUL_PORT
   );
 

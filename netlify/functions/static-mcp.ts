@@ -1,5 +1,5 @@
 import type { Context } from '@netlify/functions';
-import { handleMcpRequest } from '../../src/server/handler.js';
+import { handleMcpRequest } from 'static-mcpify/handler';
 import path from 'path';
 
 const contentDir = path.join(process.cwd(), 'examples/static/content');
@@ -63,5 +63,5 @@ export default async (req: Request, _context: Context): Promise<Response> => {
 
 export const config = {
   path: '/example/static/mcp',
-  includedFiles: ['examples/static/content/**'],
+  includedFiles: ['../../examples/static/content/**'],
 };
