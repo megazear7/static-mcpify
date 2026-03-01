@@ -1,11 +1,8 @@
 import type { Context } from '@netlify/functions';
-import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import { createMcpServer } from 'static-mcpify';
+import { handleMcpRequest } from 'static-mcpify/handler';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const contentDir = path.resolve(__dirname, '../../examples/contentful/content');
+const contentDir = path.join(process.cwd(), 'examples/static/content');
 
 export default async (req: Request, _context: Context): Promise<Response> => {
   if (req.method === 'GET') {
@@ -23,27 +20,10 @@ export default async (req: Request, _context: Context): Promise<Response> => {
   }
 
   try {
-    const server = createMcpServer(contentDir);
-    const transport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: undefined,
-    });
-
-    await server.connect(transport);
-
     const body = await req.json();
-    const responseChunks: string[] = [];
-
-    const mockRes = {
-      writeHead: (_status: number, _headers?: Record<string, string>) => {},
-      end: (chunk?: string) => {
-        if (chunk) responseChunks.push(chunk);
-      },
-      write: (chunk: string) => {
-        responseChunks.push(chunk);
-        return true;
-      },
-      on: (_event: string, _cb: () => void) => {},
-    };
+    let statusCode = 200;
+    let responseHeaders: Record<string, string> = {};
+    const chunks: string[] = [];
 
     const mockReq = {
       method: req.method,
@@ -51,14 +31,26 @@ export default async (req: Request, _context: Context): Promise<Response> => {
       body,
     };
 
-    await transport.handleRequest(mockReq as unknown as Parameters<typeof transport.handleRequest>[0], mockRes as unknown as Parameters<typeof transport.handleRequest>[1], body);
-    await server.close();
+    const mockRes = {
+      writeHead: (status: number, headers?: Record<string, string>) => {
+        statusCode = status;
+        if (headers) responseHeaders = { ...responseHeaders, ...headers };
+      },
+      end: (chunk?: string) => {
+        if (chunk) chunks.push(chunk);
+      },
+      write: (chunk: string) => {
+        chunks.push(chunk);
+        return true;
+      },
+      on: (_event: string, _cb: () => void) => {},
+    };
 
-    const responseBody = responseChunks.join('');
+    await handleMcpRequest(contentDir, mockReq, mockRes);
 
-    return new Response(responseBody, {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
+    return new Response(chunks.join(''), {
+      status: statusCode,
+      headers: responseHeaders,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
@@ -71,4 +63,5 @@ export default async (req: Request, _context: Context): Promise<Response> => {
 
 export const config = {
   path: '/example/contentful/mcp',
+  includedFiles: ['examples/contentful/content/**'],
 };

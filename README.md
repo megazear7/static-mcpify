@@ -52,8 +52,9 @@ import { handleMcpRequest } from 'static-mcpify/handler';
 import express from 'express';
 
 const app = express();
+app.use(express.json());
 
-app.post('/mcp', express.json(), async (req, res) => {
+app.all('/mcp', async (req, res) => {
   await handleMcpRequest('./my-mcp/content', req, res);
 });
 
@@ -193,6 +194,32 @@ The project includes first-class Netlify support:
 3. The brand website is served from `brand/`
 
 Just connect your repo to Netlify and deploy.
+
+## Live Examples
+
+Try the hosted example MCP servers by adding these to your VS Code `mcp.json`:
+
+**Static Content Example** (people and places):
+
+```json
+{
+  "static-example": {
+    "type": "http",
+    "url": "https://static-mcpify.alexlockhart.me/example/static/mcp"
+  }
+}
+```
+
+**Contentful Example** (fantasy adventures and campaigns):
+
+```json
+{
+  "contentful-example": {
+    "type": "http",
+    "url": "https://static-mcpify.alexlockhart.me/example/contentful/mcp"
+  }
+}
+```
 
 ## Adding a New Source Adapter
 

@@ -23,6 +23,7 @@
         <a href="#how-it-works">How It Works</a>
         <a href="#contentful">Contentful</a>
         <a href="#deploy">Deploy</a>
+        <a href="#examples">Examples</a>
         <a href="https://www.npmjs.com/package/static-mcpify" class="nav-cta">npm</a>
         <a href="https://github.com/megazear7/static-mcpify" class="nav-cta">GitHub</a>
       </div>
@@ -361,6 +362,72 @@ await transport.handleRequest(req, res, body);</code></pre>
     </div>
   </section>
 
+  <!-- Examples -->
+  <section id="examples" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Try the <span class="gradient-text">examples</span></h2>
+        <p class="section-subtitle">Live MCP servers you can connect to right now</p>
+      </div>
+
+      <div class="examples-grid">
+        <div class="example-card">
+          <div class="example-icon">📄</div>
+          <h3>Static Content Example</h3>
+          <p>A simple MCP server with static content about people and places. Perfect for testing and understanding the basics.</p>
+          <div class="example-content">
+            <strong>Content Types:</strong>
+            <ul>
+              <li><strong>Person:</strong> Bob Smith & Steve Baker with biography and skills</li>
+              <li><strong>Place:</strong> The Big Mountain & Work Site with descriptions</li>
+            </ul>
+          </div>
+          <div class="code-block example-code">
+            <div class="code-header">
+              <span class="code-title">Add to mcp.json</span>
+              <button class="copy-btn" onclick="copyToClipboard('static-code')">Copy</button>
+            </div>
+            <pre><code id="static-code">{
+  "static-example": {
+    "type": "http",
+    "url": "https://static-mcpify.alexlockhart.me/example/static/mcp"
+  }
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="example-card">
+          <div class="example-icon">⚔️</div>
+          <h3>Contentful Example</h3>
+          <p>An MCP server built from Contentful content, featuring adventures and campaigns from a fantasy world.</p>
+          <div class="example-content">
+            <strong>Content Types:</strong>
+            <ul>
+              <li><strong>Adventure:</strong> 7 epic adventures with detailed descriptions</li>
+              <li><strong>Campaign:</strong> 2 campaign arcs with story overviews</li>
+            </ul>
+          </div>
+          <div class="code-block example-code">
+            <div class="code-header">
+              <span class="code-title">Add to mcp.json</span>
+              <button class="copy-btn" onclick="copyToClipboard('contentful-code')">Copy</button>
+            </div>
+            <pre><code id="contentful-code">{
+  "contentful-example": {
+    "type": "http",
+    "url": "https://static-mcpify.alexlockhart.me/example/contentful/mcp"
+  }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="example-note">
+        <p><strong>Note:</strong> These are live MCP servers. Copy the JSON above and add it to your VS Code <code>mcp.json</code> file to connect with GitHub Copilot.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section class="section cta-section">
     <div class="container">
@@ -387,5 +454,25 @@ await transport.handleRequest(req, res, body);</code></pre>
       </div>
     </div>
   </footer>
+
+  <script>
+    function copyToClipboard(elementId) {
+      const codeElement = document.getElementById(elementId);
+      const text = codeElement.textContent || codeElement.innerText;
+
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = 'Copied!';
+        btn.style.background = 'var(--green)';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    }
+  </script>
 </body>
 </html>
