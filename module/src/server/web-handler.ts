@@ -25,6 +25,14 @@ export async function handleMcpRequest(
 
   const transport = new WebStandardStreamableHTTPServerTransport({
     sessionIdGenerator: undefined,
+    // Use JSON responses instead of SSE streaming.
+    // In SSE mode the Response body is a ReadableStream that stays open
+    // until all messages are sent — but in serverless the function would
+    // need to stay alive for the duration of that stream.
+    // With enableJsonResponse the returned Promise only resolves once all
+    // responses are ready, giving a simple JSON body that works reliably
+    // in stateless serverless environments.
+    enableJsonResponse: true,
   });
 
   await server.connect(transport);
