@@ -6,6 +6,10 @@ Turn any structured content into a static **MCP (Model Context Protocol)** serve
 
 `static-mcpify` pulls content from your CMS (currently Contentful), builds it into static Markdown and JSON files, then serves those files as a fully-featured MCP server. Your AI agents get instant access to your content — no database, no runtime dependencies.
 
+**[Website](https://static-mcpify.alexlockhart.me/)** · **[npm](https://www.npmjs.com/package/static-mcpify)** · **[GitHub](https://github.com/megazear7/static-mcpify)**
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify)
+
 ## Quick Start
 
 ### 1. Install
@@ -45,9 +49,29 @@ npx smcp build --output my-mcp --content-type blog --content-type author
 
 ### 4. Serve
 
-Create a simple server to host your MCP endpoint:
+#### Serverless (Netlify Functions, Cloudflare Workers, Deno, Bun)
 
-```javascript
+Use the web standard handler — it takes a `Request` and returns a `Response`:
+
+```typescript
+import { handleMcpRequest } from 'static-mcpify/web-handler';
+
+export default async (req: Request) => {
+  if (req.method === 'GET') {
+    return new Response(JSON.stringify({ status: 'ok' }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  return handleMcpRequest('./my-mcp/content', req);
+};
+```
+
+#### Express / Node.js HTTP
+
+Use the Node.js handler for traditional server environments:
+
+```typescript
 import { handleMcpRequest } from 'static-mcpify/handler';
 import express from 'express';
 
@@ -58,26 +82,8 @@ app.all('/mcp', async (req, res) => {
   await handleMcpRequest('./my-mcp/content', req, res);
 });
 
-app.listen(3000, () => {
-  console.log('MCP server running at http://localhost:3000/mcp');
-});
+app.listen(3000);
 ```
-
-Your MCP server is running at `http://localhost:3000/mcp`.
-
-### Serverless / Edge Deployment
-
-For serverless environments (Netlify Functions, Cloudflare Workers, Deno, Bun) use the web standard handler:
-
-```javascript
-import { handleMcpRequest } from 'static-mcpify/web-handler';
-
-export default async (req) => {
-  return handleMcpRequest('./my-mcp/content', req);
-};
-```
-
-This takes a web standard `Request` and returns a `Response` — no mocking or bridging needed.
 
 ## How It Works
 
@@ -140,8 +146,6 @@ For example, with content types `person` (tools: biography, skills) and `place` 
 }
 ```
 
-The `source` field determines which adapter is used during `smcp build`. Current options: `"contentful"`.
-
 ### Entry Config (`content/entries/<type>/config.json`)
 
 ```json
@@ -161,53 +165,6 @@ The `source` field determines which adapter is used during `smcp build`. Current
 ```
 
 Each tool defines a name and which Contentful fields to include. Rich text fields are automatically converted to Markdown.
-
-## Development
-
-### Prerequisites
-
-- Node.js 20+
-- npm
-
-### Commands
-
-| Command | Description |
-|---------|-------------|
-| `npm start` | Start both MCP servers (static + contentful) and brand website |
-| `npm run build` | TypeScript compile + build contentful example |
-| `npm run build:ts` | TypeScript compile only |
-| `npm test` | Sanity check MCP server endpoints |
-| `npm run lint` | Run ESLint |
-| `npm run fix` | Run ESLint with auto-fix |
-
-### Local Development
-
-`npm start` runs three services concurrently:
-
-- **Static MCP server** at `http://localhost:3100/mcp`
-- **Contentful MCP server** at `http://localhost:3101/mcp`
-- **Brand website** at `http://localhost:3102`
-
-### Examples
-
-The project includes two example setups:
-
-- **`examples/static/`** — Pre-built static content (person, place) for development and testing
-- **`examples/contentful/`** — Contentful-backed example (requires `.env` with credentials)
-
-## Deployment
-
-### Netlify
-
-The project includes first-class Netlify support:
-
-1. Functions in `netlify/functions/` handle MCP requests
-2. The `netlify.toml` configures routing:
-   - `/example/static/mcp` → Static example MCP server
-   - `/example/contentful/mcp` → Contentful example MCP server
-3. The brand website is served from `netlify/brand/`
-
-Just connect your repo to Netlify and deploy.
 
 ## Live Examples
 
@@ -244,26 +201,84 @@ To add support for a new CMS (e.g., Sanity, Strapi):
 3. Register it in `module/src/cli/sources/index.ts`
 4. Add the source name to the Zod enum in `module/src/types/config.ts`
 
-## Architecture
+## Development
+
+### Prerequisites
+
+- Node.js 22+
+- npm
+
+### Project Structure
 
 ```
 module/                # Publishable npm package (static-mcpify)
 ├── src/
 │   ├── types/         # Zod schemas and TypeScript types
-│   ├── cli/           # smcp CLI tool
-│   │   ├── commands/  # init and build commands
+│   ├── cli/           # smcp CLI tool (init + build commands)
 │   │   └── sources/   # Source adapters (pluggable)
 │   │       └── contentful/
-│   └── server/        # MCP server
+│   └── server/        # MCP server + handlers
 ├── package.json
 └── tsconfig.json
-netlify/               # Brand website and hosted examples
-├── brand/             # Static brand website
-├── functions/         # Netlify serverless handlers
+netlify/               # Brand website + hosted examples
+├── brand/             # Static HTML/CSS brand website
+├── functions/         # Netlify serverless function handlers
 └── package.json
 examples/              # Example content and configs
+├── static/            # Pre-built static content (no CMS needed)
+└── contentful/        # Contentful-backed content (built at deploy time)
 test/                  # Sanity tests
 ```
+
+This is an npm workspace with two packages:
+
+- **`module/`** — The publishable `static-mcpify` npm package (CLI + MCP server)
+- **`netlify/`** — Brand website and Netlify serverless functions for hosted examples
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm start` | Start both MCP servers (static + contentful) and brand website |
+| `npm run build` | TypeScript compile + build contentful example |
+| `npm run build:ts` | TypeScript compile only |
+| `npm test` | Sanity check MCP server endpoints |
+| `npm run lint` | Run ESLint |
+| `npm run fix` | Run ESLint with auto-fix |
+
+### Local Development
+
+`npm start` runs three services concurrently:
+
+- **Static MCP server** at `http://localhost:3100/mcp`
+- **Contentful MCP server** at `http://localhost:3101/mcp`
+- **Brand website** at `http://localhost:3102`
+
+### Testing
+
+Run the sanity tests, which spin up both MCP servers and verify health and MCP initialize responses:
+
+```bash
+npm test
+```
+
+Always run lint and TypeScript compilation before committing:
+
+```bash
+npm run lint
+npm run build:ts
+```
+
+### Netlify Deployment
+
+The project deploys to [static-mcpify.alexlockhart.me](https://static-mcpify.alexlockhart.me/) via Netlify.
+
+- Pushes to `main` trigger automatic deploys
+- Build command: `npm run build:ts && npm run build:contentful`
+- `node_bundler = "nft"` (Node File Tracing) resolves workspace packages in functions
+- Environment variables `CONTENTFUL_API_TOKEN` and `SPACE_ID` are set as secrets on Netlify
+
+The Netlify functions use `static-mcpify/web-handler` which wraps the MCP SDK's `WebStandardStreamableHTTPServerTransport` with `enableJsonResponse: true`. This returns a JSON response instead of SSE streaming, which is required for stateless serverless environments.
 
 ## License
 

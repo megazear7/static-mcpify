@@ -21,7 +21,7 @@
       <div class="nav-links">
         <a href="#features">Features</a>
         <a href="#how-it-works">How It Works</a>
-        <a href="#contentful">Contentful</a>
+        <a href="#serve">Serve</a>
         <a href="#deploy">Deploy</a>
         <a href="#examples">Examples</a>
         <a href="https://www.npmjs.com/package/static-mcpify" class="nav-cta">npm</a>
@@ -47,7 +47,7 @@
       </p>
       <div class="hero-actions">
         <a href="#how-it-works" class="btn btn-primary">Get Started</a>
-        <a href="#features" class="btn btn-secondary">Learn More</a>
+        <a href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify" class="btn btn-secondary">Deploy to Netlify</a>
       </div>
       <div class="hero-code">
         <div class="code-header">
@@ -56,7 +56,10 @@
           <span class="code-dot green"></span>
           <span class="code-title">Terminal</span>
         </div>
-        <pre><code><span class="code-comment"># Initialize your content structure</span>
+        <pre><code><span class="code-comment"># Install static-mcpify</span>
+<span class="code-prompt">$</span> npm install static-mcpify
+
+<span class="code-comment"># Initialize your content structure</span>
 <span class="code-prompt">$</span> npx smcp init --output my-mcp
 
 <span class="code-comment"># Pull content and build static files</span>
@@ -98,7 +101,7 @@
         <div class="feature-card">
           <div class="feature-icon">🚀</div>
           <h3>Deploy Anywhere</h3>
-          <p>Runs on any Node.js server, serverless functions, or edge runtime. First-class Netlify support included.</p>
+          <p>Runs on any Node.js server, Netlify Functions, Cloudflare Workers, Deno, or Bun. First-class serverless support.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">📝</div>
@@ -114,7 +117,7 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">How it <span class="gradient-text">works</span></h2>
-        <p class="section-subtitle">Three simple steps from content to AI-accessible MCP server</p>
+        <p class="section-subtitle">Three steps from content to AI-accessible MCP server</p>
       </div>
 
       <div class="steps">
@@ -122,7 +125,7 @@
           <div class="step-number">01</div>
           <div class="step-content">
             <h3>Initialize</h3>
-            <p>Run <code>smcp init</code> to set up your output directory. Choose your content types and define which fields power each tool.</p>
+            <p>Run <code>smcp init</code> to set up your output directory. The CLI connects to your Contentful space and lets you pick content types and configure which fields power each tool.</p>
             <div class="step-code">
               <pre><code><span class="code-prompt">$</span> npx smcp init --output my-mcp
 
@@ -157,12 +160,12 @@
             <p>The MCP server reads your static files and auto-generates tools. Connect any MCP client and start querying.</p>
             <div class="step-code">
               <pre><code><span class="code-comment"># Auto-generated MCP tools:</span>
-list_person      <span class="code-comment"># Filter & list people</span>
-get_person       <span class="code-comment"># Get person data.json</span>
+list_person           <span class="code-comment"># Filter &amp; list people</span>
+get_person            <span class="code-comment"># Get person data.json</span>
 get_person_biography  <span class="code-comment"># Get biography markdown</span>
 get_person_skills     <span class="code-comment"># Get skills markdown</span>
-list_assets      <span class="code-comment"># List all assets</span>
-get_asset        <span class="code-comment"># Get asset info</span></code></pre>
+list_assets           <span class="code-comment"># List all assets</span>
+get_asset             <span class="code-comment"># Get asset info</span></code></pre>
             </div>
           </div>
         </div>
@@ -194,6 +197,167 @@ get_asset        <span class="code-comment"># Get asset info</span></code></pre>
                 ├── data.json
                 └── tools/
                     └── description.md</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- Serve -->
+  <section id="serve" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Two ways to <span class="gradient-text">serve</span></h2>
+        <p class="section-subtitle">A web standard handler for serverless, and a Node.js handler for Express</p>
+      </div>
+
+      <div class="two-col">
+        <div class="col-code">
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-dot red"></span>
+              <span class="code-dot yellow"></span>
+              <span class="code-dot green"></span>
+              <span class="code-title">Serverless — static-mcpify/web-handler</span>
+            </div>
+            <pre><code><span class="code-comment">// Netlify Functions, Cloudflare Workers, Deno, Bun</span>
+import { handleMcpRequest } from 'static-mcpify/web-handler';
+
+export default async (req: Request) =&gt; {
+  if (req.method === 'GET') {
+    return new Response(
+      JSON.stringify({ status: 'ok' }),
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  return handleMcpRequest('./my-mcp/content', req);
+};</code></pre>
+          </div>
+
+          <p style="color: var(--text-secondary); margin-top: 12px; font-size: 0.9rem;">
+            Takes a web standard <code>Request</code>, returns a <code>Response</code>.
+            Uses JSON responses instead of SSE streaming — works reliably in stateless serverless environments.
+          </p>
+        </div>
+
+        <div class="col-code">
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-dot red"></span>
+              <span class="code-dot yellow"></span>
+              <span class="code-dot green"></span>
+              <span class="code-title">Express — static-mcpify/handler</span>
+            </div>
+            <pre><code><span class="code-comment">// Traditional Node.js HTTP server</span>
+import { handleMcpRequest } from 'static-mcpify/handler';
+import express from 'express';
+
+const app = express();
+app.use(express.json());
+
+app.all('/mcp', async (req, res) =&gt; {
+  await handleMcpRequest(
+    './my-mcp/content', req, res
+  );
+});
+
+app.listen(3000);</code></pre>
+          </div>
+
+          <p style="color: var(--text-secondary); margin-top: 12px; font-size: 0.9rem;">
+            Works with Node.js <code>IncomingMessage</code> / <code>ServerResponse</code>.
+            Uses SSE streaming for real-time responses in long-lived server processes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deploy -->
+  <section id="deploy" class="section section-dark">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Deploy to <span class="gradient-text">Netlify</span></h2>
+        <p class="section-subtitle">A concrete example: this project's own Netlify deployment</p>
+      </div>
+
+      <div class="deploy-content">
+        <div class="deploy-steps">
+          <div class="deploy-step" style="text-align: center; margin-bottom: 2rem;">
+            <a href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify">
+              <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" style="height: 44px;">
+            </a>
+          </div>
+          <div class="deploy-step">
+            <div class="deploy-step-icon">1</div>
+            <div>
+              <h3>Create a Netlify Function</h3>
+              <p>Each MCP endpoint is a small function that imports <code>handleMcpRequest</code> from <code>static-mcpify/web-handler</code> and points it at your content directory.</p>
+            </div>
+          </div>
+          <div class="deploy-step">
+            <div class="deploy-step-icon">2</div>
+            <div>
+              <h3>Configure netlify.toml</h3>
+              <p>Set the functions directory and use <code>node_bundler = "nft"</code> (Node File Tracing) to resolve workspace dependencies.</p>
+            </div>
+          </div>
+          <div class="deploy-step">
+            <div class="deploy-step-icon">3</div>
+            <div>
+              <h3>Push &amp; Deploy</h3>
+              <p>Connect your repo to Netlify and push. Your MCP server is live and accessible to any MCP client.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block deploy-code">
+          <div class="code-header">
+            <span class="code-dot red"></span>
+            <span class="code-dot yellow"></span>
+            <span class="code-dot green"></span>
+            <span class="code-title">netlify/functions/static-mcp.ts</span>
+          </div>
+          <pre><code>import type { Context } from '@netlify/functions';
+import { handleMcpRequest } from 'static-mcpify/web-handler';
+import path from 'path';
+
+const contentDir = path.join(process.cwd(), 'examples/static/content');
+
+export default async (req: Request, _context: Context): Promise&lt;Response&gt; =&gt; {
+  if (req.method === 'GET') {
+    return new Response(
+      JSON.stringify({ status: 'ok', server: 'static-mcp' }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  return handleMcpRequest(contentDir, req);
+};
+
+export const config = {
+  path: '/example/static/mcp',
+  includedFiles: ['../../examples/static/content/**'],
+};</code></pre>
+        </div>
+
+        <div class="code-block deploy-code">
+          <div class="code-header">
+            <span class="code-dot red"></span>
+            <span class="code-dot yellow"></span>
+            <span class="code-dot green"></span>
+            <span class="code-title">netlify.toml</span>
+          </div>
+          <pre><code>[build]
+  publish = "netlify/brand"
+  command = "npm run build:ts &amp;&amp; npm run build:contentful"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "nft"</code></pre>
+        </div>
       </div>
     </div>
   </section>
@@ -283,87 +447,8 @@ SPACE_ID=1x...your_space...mb</code></pre>
     </div>
   </section>
 
-  <!-- Deploy -->
-  <section id="deploy" class="section section-dark">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Deploy to <span class="gradient-text">Netlify</span></h2>
-        <p class="section-subtitle">Serverless MCP endpoints in seconds</p>
-      </div>
-
-      <div class="deploy-content">
-        <div class="deploy-steps">
-          <div class="deploy-step">
-            <div class="deploy-step-icon">1</div>
-            <div>
-              <h3>Add netlify.toml</h3>
-              <p>Configure your build and function settings. static-mcpify includes a ready-made configuration.</p>
-            </div>
-          </div>
-          <div class="deploy-step">
-            <div class="deploy-step-icon">2</div>
-            <div>
-              <h3>Create Netlify Functions</h3>
-              <p>Each MCP endpoint is a Netlify function that serves content from your static files.</p>
-            </div>
-          </div>
-          <div class="deploy-step">
-            <div class="deploy-step-icon">3</div>
-            <div>
-              <h3>Push & Deploy</h3>
-              <p>Connect your repo to Netlify and deploy. Your MCP server is live at <code>/example/static/mcp</code>.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="code-block deploy-code">
-          <div class="code-header">
-            <span class="code-dot red"></span>
-            <span class="code-dot yellow"></span>
-            <span class="code-dot green"></span>
-            <span class="code-title">netlify.toml</span>
-          </div>
-          <pre><code>[build]
-  publish = "brand"
-
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
-
-[[redirects]]
-  from = "/example/static/mcp"
-  to = "/.netlify/functions/static-mcp"
-  status = 200
-
-[[redirects]]
-  from = "/example/contentful/mcp"
-  to = "/.netlify/functions/contentful-mcp"
-  status = 200</code></pre>
-        </div>
-
-        <div class="code-block deploy-code">
-          <div class="code-header">
-            <span class="code-dot red"></span>
-            <span class="code-dot yellow"></span>
-            <span class="code-dot green"></span>
-            <span class="code-title">netlify/functions/static-mcp.ts</span>
-          </div>
-          <pre><code>import { createMcpServer } from 'static-mcpify';
-
-<span class="code-comment">// The server reads your content directory</span>
-<span class="code-comment">// and auto-generates MCP tools</span>
-const server = createMcpServer(contentDir);
-
-<span class="code-comment">// Connect transport and handle requests</span>
-await server.connect(transport);
-await transport.handleRequest(req, res, body);</code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Examples -->
-  <section id="examples" class="section">
+  <section id="examples" class="section section-dark">
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Try the <span class="gradient-text">examples</span></h2>
@@ -374,17 +459,17 @@ await transport.handleRequest(req, res, body);</code></pre>
         <div class="example-card">
           <div class="example-icon">📄</div>
           <h3>Static Content Example</h3>
-          <p>A simple MCP server with static content about people and places. Perfect for testing and understanding the basics.</p>
+          <p>A simple MCP server with pre-built static content about people and places. No CMS credentials needed.</p>
           <div class="example-content">
             <strong>Content Types:</strong>
             <ul>
-              <li><strong>Person:</strong> Bob Smith & Steve Baker with biography and skills</li>
-              <li><strong>Place:</strong> The Big Mountain & Work Site with descriptions</li>
+              <li><strong>Person:</strong> Bob Smith &amp; Steve Baker with biography and skills</li>
+              <li><strong>Place:</strong> The Big Mountain &amp; Work Site with descriptions</li>
             </ul>
           </div>
           <div class="code-block example-code">
             <div class="code-header">
-              <span class="code-title">Add to mcp.json</span>
+              <span class="code-title">Add to VS Code mcp.json</span>
               <button class="copy-btn" onclick="copyToClipboard('static-code')">Copy</button>
             </div>
             <pre><code id="static-code">{
@@ -399,7 +484,7 @@ await transport.handleRequest(req, res, body);</code></pre>
         <div class="example-card">
           <div class="example-icon">⚔️</div>
           <h3>Contentful Example</h3>
-          <p>An MCP server built from Contentful content, featuring adventures and campaigns from a fantasy world.</p>
+          <p>An MCP server built from Contentful content at deploy time, featuring adventures and campaigns from a fantasy world.</p>
           <div class="example-content">
             <strong>Content Types:</strong>
             <ul>
@@ -409,7 +494,7 @@ await transport.handleRequest(req, res, body);</code></pre>
           </div>
           <div class="code-block example-code">
             <div class="code-header">
-              <span class="code-title">Add to mcp.json</span>
+              <span class="code-title">Add to VS Code mcp.json</span>
               <button class="copy-btn" onclick="copyToClipboard('contentful-code')">Copy</button>
             </div>
             <pre><code id="contentful-code">{
@@ -423,7 +508,7 @@ await transport.handleRequest(req, res, body);</code></pre>
       </div>
 
       <div class="example-note">
-        <p><strong>Note:</strong> These are live MCP servers. Copy the JSON above and add it to your VS Code <code>mcp.json</code> file to connect with GitHub Copilot.</p>
+        <p><strong>Tip:</strong> These are live MCP servers running on Netlify Functions. Copy the JSON above into your VS Code <code>mcp.json</code> file to connect with GitHub Copilot or any MCP client.</p>
       </div>
     </div>
   </section>
@@ -435,8 +520,8 @@ await transport.handleRequest(req, res, body);</code></pre>
       <p class="cta-subtitle">Get started in under 5 minutes. Open source, free forever.</p>
       <div class="hero-actions">
         <a href="https://www.npmjs.com/package/static-mcpify" class="btn btn-primary">Install from npm</a>
+        <a href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify" class="btn btn-secondary">Deploy to Netlify</a>
         <a href="https://github.com/megazear7/static-mcpify" class="btn btn-secondary">View on GitHub</a>
-        <a href="#how-it-works" class="btn btn-secondary">Read the Docs</a>
       </div>
     </div>
   </section>
