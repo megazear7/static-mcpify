@@ -65,6 +65,20 @@ app.listen(3000, () => {
 
 Your MCP server is running at `http://localhost:3000/mcp`.
 
+### Serverless / Edge Deployment
+
+For serverless environments (Netlify Functions, Cloudflare Workers, Deno, Bun) use the web standard handler:
+
+```javascript
+import { handleMcpRequest } from 'static-mcpify/web-handler';
+
+export default async (req) => {
+  return handleMcpRequest('./my-mcp/content', req);
+};
+```
+
+This takes a web standard `Request` and returns a `Response` — no mocking or bridging needed.
+
 ## How It Works
 
 ### Content Structure
