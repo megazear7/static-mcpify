@@ -1,6 +1,9 @@
 [build]
   publish = "netlify/brand"
-  command = "npm run build"
+  command = "node --version && npm --version && npm run build:ts && npm run build:contentful"
+
+[build.environment]
+  NODE_VERSION = "22"
 
 [functions]
   directory = "netlify/functions"

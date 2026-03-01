@@ -1,12 +1,19 @@
 {
-  "servers": {
-    "static-example": {
-      "type": "http",
-      "url": "http://localhost:3100/mcp"
-    },
-    "contentful-example": {
-      "type": "http",
-      "url": "http://localhost:3101/mcp"
+    "servers": {
+        "static-example": {
+            "type": "http",
+            "url": "https://static-mcpify.alexlockhart.me/example/static/mcp"
+        },
+        "contentful-example": {
+            "type": "http",
+            "url": "https://static-mcpify.alexlockhart.me/example/contentful/mcp"
+        },
+        "netlify": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@netlify/mcp"
+            ]
+        }
     }
-  }
 }
