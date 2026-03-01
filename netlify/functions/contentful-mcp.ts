@@ -1,5 +1,5 @@
 import type { Context } from '@netlify/functions';
-import { handleMcpRequest } from 'static-mcpify/handler';
+import { handleMcpRequest } from '../../src/server/handler.js';
 import path from 'path';
 
 const contentDir = path.join(process.cwd(), 'examples/static/content');
