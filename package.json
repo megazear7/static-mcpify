@@ -5,7 +5,7 @@
     "build:ts": "npm run build:ts -w module",
     "build:contentful": "tsx module/src/cli/index.ts build --output examples/contentful",
     "build": "npm run build:ts && npm run build:contentful",
-    "start": "npm run build:ts && concurrently --names static,contentful,brand \"tsx module/src/server/standalone.ts examples/static/content 3100\" \"tsx module/src/server/standalone.ts examples/contentful/content 3101\" \"npx serve netlify/brand -l 3102\"",
+    "start": "npm run build:ts && concurrently --names static,contentful,brand \"BASE_URL=http://localhost:3102 tsx module/src/server/standalone.ts examples/static/content 3100\" \"tsx module/src/server/standalone.ts examples/contentful/content 3101\" \"npx serve netlify/brand -l 3102\"",
     "test": "tsx test/sanity.ts",
     "fix": "eslint --fix 'module/src/**/*.ts' 'netlify/functions/**/*.ts' 'test/**/*.ts'",
     "lint": "eslint 'module/src/**/*.ts' 'netlify/functions/**/*.ts' 'test/**/*.ts'"

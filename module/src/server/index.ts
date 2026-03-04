@@ -49,12 +49,12 @@ function scanContentDir(contentDir: string): {
     }
   }
 
-  // Scan assets
+  // Scan assets — only .json files, strip extension for tool display
   let assets: string[] = [];
   if (fs.existsSync(assetsDir)) {
     assets = fs.readdirSync(assetsDir, { withFileTypes: true })
-      .filter((f) => f.isFile())
-      .map((f) => f.name);
+      .filter((f) => f.isFile() && f.name.endsWith('.json'))
+      .map((f) => f.name.replace(/\.json$/, ''));
   }
 
   return { contentTypes, assets };
@@ -76,9 +76,9 @@ export function createMcpServer(contentDir: string): McpServer {
   // ============================================
   server.tool(
     'list_assets',
-    'List all available assets. Optionally filter by filename substring.',
+    'List all available assets. Optionally filter by name substring.',
     {
-      filter: z.string().optional().describe('Optional substring to filter asset filenames'),
+      filter: z.string().optional().describe('Optional substring to filter asset names'),
     },
     async ({ filter }) => {
       let results = assets;
@@ -104,26 +104,31 @@ export function createMcpServer(contentDir: string): McpServer {
   // ============================================
   server.tool(
     'get_asset',
-    'Get details about a specific asset by filename.',
+    'Get details about a specific asset by name.',
     {
-      fileName: z.string().describe('The asset filename'),
+      name: z.string().describe('The asset name (e.g., "test-image")'),
     },
-    async ({ fileName }) => {
+    async ({ name }) => {
       const assetsDir = path.join(contentDir, 'assets');
-      const assetPath = path.join(assetsDir, fileName);
+      const assetPath = path.join(assetsDir, `${name}.json`);
 
       if (!fs.existsSync(assetPath)) {
         return {
-          content: [{ type: 'text' as const, text: `Asset "${fileName}" not found.` }],
+          content: [{ type: 'text' as const, text: `Asset "${name}" not found.` }],
           isError: true,
         };
       }
+
+      const raw = fs.readFileSync(assetPath, 'utf-8');
+      const assetJson = JSON.parse(raw);
+      const baseUrl = process.env.BASE_URL || '';
+      const enriched = { ...assetJson, url: `${baseUrl}/${assetJson.file}` };
 
       return {
         content: [
           {
             type: 'text' as const,
-            text: `Asset: ${fileName}\nPath: ${assetPath}`,
+            text: JSON.stringify(enriched, null, 2),
           },
         ],
       };

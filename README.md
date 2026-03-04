@@ -96,7 +96,7 @@ my-mcp/
 ├── config.json
 └── content/
     ├── assets/
-    │   └── photo.png
+    │   └── photo.json
     └── entries/
         ├── person/
         │   ├── config.json           # Tools: biography, skills
@@ -125,7 +125,7 @@ The MCP server dynamically creates tools based on the content structure:
 | Tool | Description |
 |------|-------------|
 | `list_assets` | List assets, with optional filter |
-| `get_asset` | Get asset details by filename |
+| `get_asset` | Get asset details by name |
 | `list_<type>` | List entries of a content type, with optional filter |
 | `get_<type>` | Get entry data.json by title slug |
 | `get_<type>_<tool>` | Get a tool's markdown by title slug |

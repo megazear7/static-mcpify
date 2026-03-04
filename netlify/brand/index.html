@@ -165,7 +165,7 @@ get_person            <span class="code-comment"># Get person data.json</span>
 get_person_biography  <span class="code-comment"># Get biography markdown</span>
 get_person_skills     <span class="code-comment"># Get skills markdown</span>
 list_assets           <span class="code-comment"># List all assets</span>
-get_asset             <span class="code-comment"># Get asset info</span></code></pre>
+get_asset             <span class="code-comment"># Get asset details by name</span></code></pre>
             </div>
           </div>
         </div>
@@ -176,8 +176,8 @@ get_asset             <span class="code-comment"># Get asset info</span></code><
         <pre><code>my-mcp/
 ├── config.json                          <span class="code-comment"># Source configuration</span>
 └── content/
-    ├── assets/                          <span class="code-comment"># Downloaded assets</span>
-    │   └── photo.png
+    ├── assets/                          <span class="code-comment"># Asset metadata (JSON)</span>
+    │   └── photo.json
     └── entries/
         ├── person/
         │   ├── config.json              <span class="code-comment"># Tools: biography, skills</span>
