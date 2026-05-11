@@ -1,6 +1,6 @@
 {
   "name": "static-mcpify",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "Turn any structured content into a static MCP (Model Context Protocol) server",
   "main": "dist/src/server/index.js",
@@ -29,7 +29,7 @@
     "llm",
     "tools"
   ],
-  "author": "",
+  "author": "Alex Lockhart",
   "license": "ISC",
   "repository": {
     "type": "git",
