@@ -107,7 +107,7 @@ const tableDocument = {
       ],
     },
   ],
-} as const;
+} as unknown as Parameters<typeof richTextDocumentToMarkdown>[0];
 
 const markdown = richTextDocumentToMarkdown(tableDocument);
 
