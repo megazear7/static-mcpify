@@ -103,6 +103,7 @@ The Netlify functions use `static-mcpify/web-handler` which wraps the MCP SDK's 
 
 1. Check for the list of currently published versions on npm using `npm view static-mcpify versions`
 2. Update the version in `module/package.json` if the current version is already published (follow semantic versioning: patch, minor, major)
+3. If the version was updated, commit and push the changes.
 3. Run `npm run build` to build the package.
 4. Run `npm run test` to test the package.
 5. Run `npm publish --workspace=module` to publish the `static-mcpify` package to npm
