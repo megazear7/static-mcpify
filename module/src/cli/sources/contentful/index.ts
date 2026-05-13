@@ -130,13 +130,27 @@ function extractAssetRefs(
   return assets;
 }
 
+function normalizeTableHtmlForMarkdown(html: string): string {
+  return html
+    .replace(/<th>(?:\s|&nbsp;|<p>\s*<\/p>)*<\/th>/g, '<th>&nbsp;</th>')
+    .replace(/<td>(?:\s|&nbsp;|<p>\s*<\/p>)*<\/td>/g, '<td>&nbsp;</td>');
+}
+
+export function richTextDocumentToMarkdown(
+  value: Parameters<typeof documentToHtmlString>[0]
+): string {
+  const html = documentToHtmlString(value);
+  return NodeHtmlMarkdown.translate(normalizeTableHtmlForMarkdown(html));
+}
+
 function fieldToMarkdown(key: string, value: unknown): string {
   if (value === null || value === undefined) return '';
 
   if (isRichTextField(value)) {
     try {
-      const html = documentToHtmlString(value as Parameters<typeof documentToHtmlString>[0]);
-      const md = NodeHtmlMarkdown.translate(html);
+      const md = richTextDocumentToMarkdown(
+        value as Parameters<typeof documentToHtmlString>[0]
+      );
       return `## ${key}\n\n${md}\n\n`;
     } catch {
       return `## ${key}\n\n[Rich text conversion failed]\n\n`;

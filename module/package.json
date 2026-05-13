@@ -1,6 +1,6 @@
 {
   "name": "static-mcpify",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "description": "Turn any structured content into a static MCP (Model Context Protocol) server",
   "main": "dist/src/server/index.js",
