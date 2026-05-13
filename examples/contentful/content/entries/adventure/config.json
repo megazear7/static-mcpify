@@ -1,5 +1,9 @@
 {
   "contentType": "adventure",
+  "includeMetadataTool": true,
+  "defaultTool": {
+    "fields": ["description"]
+  },
   "tools": [
     {
       "name": "description",

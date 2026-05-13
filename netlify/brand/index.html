@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>static-mcpify — Build Static MCP Servers from Any Content Source</title>
+  <title>static-mcpify — Build Static MCP Servers from any content Source</title>
   <meta name="description" content="Transform structured content into powerful MCP (Model Context Protocol) servers. Pull from Contentful, deploy anywhere.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,7 +96,7 @@
         <div class="feature-card">
           <div class="feature-icon">🛠️</div>
           <h3>Dynamic Tools</h3>
-          <p>Tools are auto-generated from your content structure. List entries, get details, and access specific content fields.</p>
+          <p>Tools are auto-generated from your content structure. Mix default entry tools, optional metadata tools, and named field-specific tools per content type.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">🚀</div>
@@ -125,7 +125,7 @@
           <div class="step-number">01</div>
           <div class="step-content">
             <h3>Initialize</h3>
-            <p>Run <code>smcp init</code> to set up your output directory. The CLI connects to your Contentful space and lets you pick content types and configure which fields power each tool.</p>
+            <p>Run <code>smcp init</code> to set up your output directory. The CLI connects to your Contentful space and lets you pick content types and configure named tools. You can then tune each entry config with an optional <code>defaultTool</code>, optional metadata exposure, and any number of named tools.</p>
             <div class="step-code">
               <pre><code><span class="code-prompt">$</span> npx smcp init --output my-mcp
 
@@ -141,12 +141,13 @@
           <div class="step-number">02</div>
           <div class="step-content">
             <h3>Build</h3>
-            <p>Run <code>smcp build</code> to pull content from your CMS and generate markdown files, data.json files, and download assets.</p>
+            <p>Run <code>smcp build</code> to pull content from your CMS and generate <code>data.json</code>, default markdown, named tool markdown, and downloaded assets.</p>
             <div class="step-code">
               <pre><code><span class="code-prompt">$</span> npx smcp build --output my-mcp
 
 <span class="code-comment"># Generates per entry:</span>
 <span class="code-comment">#   content/entries/person/bob-smith/data.json</span>
+<span class="code-comment">#   content/entries/person/bob-smith/tools/_default.md</span>
 <span class="code-comment">#   content/entries/person/bob-smith/tools/biography.md</span>
 <span class="code-comment">#   content/entries/person/bob-smith/tools/skills.md</span></code></pre>
             </div>
@@ -161,7 +162,8 @@
             <div class="step-code">
               <pre><code><span class="code-comment"># Auto-generated MCP tools:</span>
 list_person           <span class="code-comment"># Filter &amp; list people</span>
-get_person            <span class="code-comment"># Get person data.json</span>
+get_person            <span class="code-comment"># Get default tool markdown</span>
+get_person_metadata   <span class="code-comment"># Get entry metadata JSON</span>
 get_person_biography  <span class="code-comment"># Get biography markdown</span>
 get_person_skills     <span class="code-comment"># Get skills markdown</span>
 list_assets           <span class="code-comment"># List all assets</span>
@@ -180,15 +182,17 @@ get_asset             <span class="code-comment"># Get asset details by name</sp
     │   └── photo.json
     └── entries/
         ├── person/
-        │   ├── config.json              <span class="code-comment"># Tools: biography, skills</span>
+        │   ├── config.json              <span class="code-comment"># defaultTool + tools: biography, skills</span>
         │   ├── bob-smith/
         │   │   ├── data.json            <span class="code-comment"># All non-rich-text fields</span>
         │   │   └── tools/
-        │   │       ├── biography.md     <span class="code-comment"># Rich text → Markdown</span>
+        │   │       ├── _default.md      <span class="code-comment"># Output for get_person</span>
+        │   │       ├── biography.md     <span class="code-comment"># Output for get_person_biography</span>
         │   │       └── skills.md
         │   └── steve-baker/
         │       ├── data.json
         │       └── tools/
+        │           ├── _default.md
         │           ├── biography.md
         │           └── skills.md
         └── place/
@@ -197,6 +201,9 @@ get_asset             <span class="code-comment"># Get asset details by name</sp
                 ├── data.json
                 └── tools/
                     └── description.md</code></pre>
+        <p style="color: var(--text-secondary); margin-top: 12px; font-size: 0.95rem;">
+          <code>_default.md</code> is only generated when <code>defaultTool</code> is configured for that entry type. Named files like <code>biography.md</code> or <code>description.md</code> are only generated for tools listed under <code>tools</code>.
+        </p>
       </div>
     </div>
   </section>
@@ -382,11 +389,11 @@ export const config = {
             </li>
             <li>
               <strong>Initialize</strong>
-              <p>Run <code>smcp init --output my-mcp</code>. The CLI will connect to your Contentful space, show you all available content types, and let you pick which fields to expose as tools.</p>
+              <p>Run <code>smcp init --output my-mcp</code>. The CLI will connect to your Contentful space, show you all available content types, and let you pick which fields to expose as named tools.</p>
             </li>
             <li>
               <strong>Build</strong>
-              <p>Run <code>smcp build --output my-mcp</code>. All entries are pulled, rich text fields converted to markdown, and assets downloaded.</p>
+              <p>Run <code>smcp build --output my-mcp</code>. All entries are pulled, rich text fields converted to markdown, default tool output is written to <code>_default.md</code> when configured, and assets are downloaded.</p>
             </li>
             <li>
               <strong>Deploy</strong>
@@ -415,6 +422,10 @@ SPACE_ID=1x...your_space...mb</code></pre>
             </div>
             <pre><code>{
   "contentType": "blog",
+  "includeMetadataTool": true,
+  "defaultTool": {
+    "fields": ["body"]
+  },
   "tools": [
     {
       "name": "summary",
@@ -427,6 +438,10 @@ SPACE_ID=1x...your_space...mb</code></pre>
   ]
 }</code></pre>
           </div>
+
+          <p style="color: var(--text-secondary); margin-top: 12px; font-size: 0.9rem;">
+            <code>includeMetadataTool</code> defaults to <code>false</code>. <code>defaultTool</code> and <code>tools</code> are both optional, so a content type can expose only a default tool, only named tools, both, or metadata as well.
+          </p>
         </div>
       </div>
 
@@ -459,7 +474,7 @@ SPACE_ID=1x...your_space...mb</code></pre>
         <div class="example-card">
           <div class="example-icon">📄</div>
           <h3>Static Content Example</h3>
-          <p>A simple MCP server with pre-built static content about people and places. No CMS credentials needed.</p>
+          <p>A simple MCP server with pre-built static content about people and places. No CMS credentials needed. This example demonstrates named tools without default or metadata tools.</p>
           <div class="example-content">
             <strong>Content Types:</strong>
             <ul>
@@ -484,12 +499,12 @@ SPACE_ID=1x...your_space...mb</code></pre>
         <div class="example-card">
           <div class="example-icon">⚔️</div>
           <h3>Contentful Example</h3>
-          <p>An MCP server built from Contentful content at deploy time, featuring adventures and campaigns from a fantasy world.</p>
+          <p>An MCP server built from Contentful content at deploy time, featuring adventures and campaigns from a fantasy world. This example demonstrates <code>defaultTool</code>, optional named tools, and metadata exposure.</p>
           <div class="example-content">
             <strong>Content Types:</strong>
             <ul>
-              <li><strong>Adventure:</strong> 7 epic adventures with detailed descriptions</li>
-              <li><strong>Campaign:</strong> 2 campaign arcs with story overviews</li>
+              <li><strong>Adventure:</strong> 7 epic adventures with a default description tool, named description tool, and metadata tool</li>
+              <li><strong>Campaign:</strong> 2 campaign arcs exposed through a default tool only</li>
             </ul>
           </div>
           <div class="code-block example-code">

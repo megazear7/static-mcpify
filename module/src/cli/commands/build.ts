@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import chalk from 'chalk';
-import { OutputConfigSchema, EntryConfigSchema } from '../../types/index.js';
+import { OutputConfigSchema, EntryConfigSchema, DEFAULT_TOOL_FILENAME } from '../../types/index.js';
 import type { OutputConfig, EntryConfig } from '../../types/index.js';
 import { getSourceAdapter } from '../sources/index.js';
 
@@ -98,6 +98,11 @@ export async function buildCommand(
         path.join(entityDir, 'data.json'),
         JSON.stringify(entry.data, null, 2) + '\n'
       );
+
+      if (entryConfig.defaultTool) {
+        const markdown = adapter.buildToolMarkdown(entry, entryConfig.defaultTool.fields);
+        await fs.writeFile(path.join(toolsDir, DEFAULT_TOOL_FILENAME), markdown);
+      }
 
       // Write tool markdown files
       for (const tool of entryConfig.tools) {

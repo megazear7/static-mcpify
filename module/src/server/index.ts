@@ -2,7 +2,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import fs from 'fs';
 import path from 'path';
-import { EntryConfigSchema } from '../types/index.js';
+import { DEFAULT_TOOL_FILENAME, EntryConfigSchema } from '../types/index.js';
 import type { EntryConfig } from '../types/index.js';
 
 interface ContentTypeInfo {
@@ -165,37 +165,76 @@ export function createMcpServer(contentDir: string): McpServer {
       }
     );
 
-    // get_<content-type>
-    server.tool(
-      `get_${ct.name}`,
-      `Get the data for a specific ${ct.name} entry by title.`,
-      {
-        title: z.string().describe('The entry title (slug format, e.g., "bob-smith")'),
-      },
-      async ({ title }) => {
-        const dataPath = path.join(contentDir, 'entries', ct.name, title, 'data.json');
+    if (ct.config.includeMetadataTool) {
+      server.tool(
+        `get_${ct.name}_metadata`,
+        `Get the metadata for a specific ${ct.name} entry by title.`,
+        {
+          title: z.string().describe('The entry title (slug format, e.g., "bob-smith")'),
+        },
+        async ({ title }) => {
+          const dataPath = path.join(contentDir, 'entries', ct.name, title, 'data.json');
 
-        if (!fs.existsSync(dataPath)) {
+          if (!fs.existsSync(dataPath)) {
+            return {
+              content: [
+                { type: 'text' as const, text: `Entry "${title}" not found in ${ct.name}.` },
+              ],
+              isError: true,
+            };
+          }
+
+          const data = fs.readFileSync(dataPath, 'utf-8');
           return {
-            content: [
-              { type: 'text' as const, text: `Entry "${title}" not found in ${ct.name}.` },
-            ],
-            isError: true,
+            content: [{ type: 'text' as const, text: data }],
           };
         }
+      );
+    }
 
-        const data = fs.readFileSync(dataPath, 'utf-8');
-        return {
-          content: [{ type: 'text' as const, text: data }],
-        };
-      }
-    );
+    if (ct.config.defaultTool) {
+      server.tool(
+        `get_${ct.name}`,
+        ct.config.defaultTool.description ??
+          `Get the default content for a specific ${ct.name} entry.`,
+        {
+          title: z.string().describe('The entry title (slug format, e.g., "bob-smith")'),
+        },
+        async ({ title }) => {
+          const mdPath = path.join(
+            contentDir,
+            'entries',
+            ct.name,
+            title,
+            'tools',
+            DEFAULT_TOOL_FILENAME
+          );
+
+          if (!fs.existsSync(mdPath)) {
+            return {
+              content: [
+                {
+                  type: 'text' as const,
+                  text: `Default tool not found for entry "${title}" in ${ct.name}.`,
+                },
+              ],
+              isError: true,
+            };
+          }
+
+          const content = fs.readFileSync(mdPath, 'utf-8');
+          return {
+            content: [{ type: 'text' as const, text: content }],
+          };
+        }
+      );
+    }
 
     // get_<content-type>_<tool-name> for each tool
     for (const tool of ct.config.tools) {
       server.tool(
         `get_${ct.name}_${tool.name}`,
-        `Get the ${tool.name} for a specific ${ct.name} entry.`,
+        tool.description ?? `Get the ${tool.name} for a specific ${ct.name} entry.`,
         {
           title: z.string().describe('The entry title (slug format, e.g., "bob-smith")'),
         },

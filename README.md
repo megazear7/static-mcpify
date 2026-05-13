@@ -99,16 +99,18 @@ my-mcp/
     │   └── photo.json
     └── entries/
         ├── person/
-        │   ├── config.json           # Tools: biography, skills
+      │   ├── config.json           # defaultTool + tools: biography, skills
         │   ├── bob-smith/
         │   │   ├── data.json         # All non-rich-text fields
         │   │   └── tools/
-        │   │       ├── biography.md  # Rich text → Markdown
+      │   │       ├── _default.md   # Output for get_person
+      │   │       ├── biography.md  # Output for get_person_biography
         │   │       └── skills.md
         │   └── steve-baker/
         │       ├── data.json
         │       └── tools/
-        │           ├── biography.md
+      │           ├── _default.md
+      │           ├── biography.md
         │           └── skills.md
         └── place/
             ├── config.json
@@ -117,6 +119,8 @@ my-mcp/
                 └── tools/
                     └── description.md
 ```
+
+  `_default.md` is only generated when `defaultTool` is configured for that entry type. Named tool files like `biography.md` or `description.md` are only generated for entries listed in `tools`.
 
 ### Auto-Generated Tools
 
@@ -127,12 +131,13 @@ The MCP server dynamically creates tools based on the content structure:
 | `list_assets` | List assets, with optional filter |
 | `get_asset` | Get asset details by name |
 | `list_<type>` | List entries of a content type, with optional filter |
-| `get_<type>` | Get entry data.json by title slug |
+| `get_<type>` | Get the configured default tool content by title slug |
+| `get_<type>_metadata` | Get entry metadata JSON by title slug when enabled |
 | `get_<type>_<tool>` | Get a tool's markdown by title slug |
 
-For example, with content types `person` (tools: biography, skills) and `place` (tools: description):
+For example, with content types `person` (default tool enabled, tools: biography, skills) and `place` (tools: description):
 
-- `list_person` / `get_person` / `get_person_biography` / `get_person_skills`
+- `list_person` / `get_person` / `get_person_metadata` / `get_person_biography` / `get_person_skills`
 - `list_place` / `get_place` / `get_place_description`
 - `list_assets` / `get_asset`
 
@@ -151,6 +156,10 @@ For example, with content types `person` (tools: biography, skills) and `place` 
 ```json
 {
   "contentType": "person",
+  "includeMetadataTool": true,
+  "defaultTool": {
+    "fields": ["biography"]
+  },
   "tools": [
     {
       "name": "biography",
@@ -164,7 +173,11 @@ For example, with content types `person` (tools: biography, skills) and `place` 
 }
 ```
 
-Each tool defines a name and which Contentful fields to include. Rich text fields are automatically converted to Markdown.
+`includeMetadataTool` is optional and defaults to `false`.
+
+`defaultTool` is optional. When present, it controls the content returned by `get_<type>`. When omitted, `get_<type>` is not registered.
+
+`tools` is optional. Each named tool defines a name and which Contentful fields to include. Rich text fields are automatically converted to Markdown.
 
 ## Live Examples
 
