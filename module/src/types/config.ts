@@ -1,5 +1,43 @@
 import { z } from 'zod';
 
+export const FilterOperatorSchema = z.enum(['equals', 'notEquals', 'exists', 'in', 'match']);
+export type FilterOperator = z.infer<typeof FilterOperatorSchema>;
+
+export const EntryFilterSchema = z.object({
+  field: z.string().min(1, 'Filter field is required'),
+  operator: FilterOperatorSchema,
+  value: z.union([z.string(), z.array(z.string().min(1))]).optional(),
+}).superRefine((filter, ctx) => {
+  if (filter.operator === 'exists') {
+    return;
+  }
+
+  if (filter.value === undefined) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Filter value is required for operator "${filter.operator}"`,
+      path: ['value'],
+    });
+  }
+
+  if (filter.operator === 'in' && !Array.isArray(filter.value)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Filter value must be an array for operator "in"',
+      path: ['value'],
+    });
+  }
+
+  if (filter.operator !== 'in' && Array.isArray(filter.value)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Filter value must be a string for operator "${filter.operator}"`,
+      path: ['value'],
+    });
+  }
+});
+export type EntryFilter = z.infer<typeof EntryFilterSchema>;
+
 /**
  * Tool configuration for an entry type.
  * Each tool defines a name and which fields to include.
@@ -18,6 +56,7 @@ export type ToolConfig = z.infer<typeof ToolConfigSchema>;
  */
 export const EntryConfigSchema = z.object({
   contentType: z.string().min(1, 'Content type name is required'),
+  filters: z.array(EntryFilterSchema).default([]),
   tools: z.array(ToolConfigSchema).min(1, 'At least one tool is required'),
 });
 

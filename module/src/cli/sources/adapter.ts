@@ -1,3 +1,5 @@
+import type { EntryFilter } from '../../types/index.js';
+
 /**
  * Source adapter interface.
  * Implement this to add support for new content sources.
@@ -20,7 +22,7 @@ export interface SourceEntry {
 
 export interface SourceAdapter {
   /** Fetch all entries for a given content type */
-  fetchEntries(contentType: string): Promise<SourceEntry[]>;
+  fetchEntries(contentType: string, filters?: EntryFilter[]): Promise<SourceEntry[]>;
 
   /** Build markdown content from an entry for the given fields */
   buildToolMarkdown(entry: SourceEntry, fields: string[]): string;

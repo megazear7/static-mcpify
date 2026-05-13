@@ -1,3 +1,4 @@
+import type { EntryFilter } from '../../../types/index.js';
 import { createClient } from 'contentful';
 import type { Entry, Asset } from 'contentful';
 import { NodeHtmlMarkdown } from 'node-html-markdown';
@@ -182,11 +183,12 @@ export class ContentfulAdapter implements SourceAdapter {
     this.client = createClient({ space: spaceId, accessToken: token });
   }
 
-  async fetchEntries(contentType: string): Promise<SourceEntry[]> {
+  async fetchEntries(contentType: string, filters: EntryFilter[] = []): Promise<SourceEntry[]> {
     const response = await this.client.getEntries({
       content_type: contentType,
       limit: 1000,
       include: 2,
+      ...buildContentfulFilterQuery(filters),
     });
 
     // Build asset map from includes
@@ -254,5 +256,28 @@ export class ContentfulAdapter implements SourceAdapter {
     }
     const buffer = Buffer.from(await response.arrayBuffer());
     await fs.writeFile(destPath, buffer);
+  }
+}
+
+function buildContentfulFilterQuery(filters: EntryFilter[]): Record<string, string> {
+  return Object.fromEntries(filters.map((filter) => buildContentfulFilterParam(filter)));
+}
+
+function buildContentfulFilterParam(filter: EntryFilter): [string, string] {
+  const fieldName = filter.field.startsWith('fields.') || filter.field.startsWith('sys.')
+    ? filter.field
+    : `fields.${filter.field}`;
+
+  switch (filter.operator) {
+    case 'equals':
+      return [fieldName, filter.value as string];
+    case 'notEquals':
+      return [`${fieldName}[ne]`, filter.value as string];
+    case 'exists':
+      return [`${fieldName}[exists]`, 'true'];
+    case 'in':
+      return [`${fieldName}[in]`, (filter.value as string[]).join(',')];
+    case 'match':
+      return [`${fieldName}[match]`, filter.value as string];
   }
 }

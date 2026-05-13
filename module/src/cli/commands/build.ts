@@ -85,7 +85,7 @@ export async function buildCommand(
     console.log(chalk.cyan(`Building content type: ${ctId}`));
 
     // Pull entries from source
-    const entries = await adapter.fetchEntries(ctId);
+    const entries = await adapter.fetchEntries(entryConfig.contentType, entryConfig.filters);
     console.log(chalk.dim(`  Found ${entries.length} entries`));
 
     for (const entry of entries) {
