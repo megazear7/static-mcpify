@@ -27,6 +27,9 @@ export interface SourceAdapter {
   /** Build markdown content from an entry for the given fields */
   buildToolMarkdown(entry: SourceEntry, fields: string[]): string;
 
+  /** Build structured JSON content from an entry for the given fields */
+  buildToolStructuredContent(entry: SourceEntry, fields: string[]): Record<string, unknown>;
+
   /** Download an asset to a local path */
   downloadAsset(url: string, destPath: string): Promise<void>;
 }

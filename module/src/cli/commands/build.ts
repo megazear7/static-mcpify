@@ -1,9 +1,17 @@
 import fs from 'fs/promises';
 import path from 'path';
 import chalk from 'chalk';
-import { OutputConfigSchema, EntryConfigSchema, DEFAULT_TOOL_FILENAME } from '../../types/index.js';
+import {
+  OutputConfigSchema,
+  EntryConfigSchema,
+  DEFAULT_TOOL_BASENAME,
+} from '../../types/index.js';
 import type { OutputConfig, EntryConfig } from '../../types/index.js';
 import { getSourceAdapter } from '../sources/index.js';
+
+function getToolFilename(name: string, format: EntryConfig['format']): string {
+  return `${name}.${format === 'json' ? 'json' : 'md'}`;
+}
 
 export async function buildCommand(
   output: string,
@@ -100,17 +108,34 @@ export async function buildCommand(
       );
 
       if (entryConfig.defaultTool) {
-        const markdown = adapter.buildToolMarkdown(entry, entryConfig.defaultTool.fields);
-        await fs.writeFile(path.join(toolsDir, DEFAULT_TOOL_FILENAME), markdown);
+        const defaultToolPath = path.join(
+          toolsDir,
+          getToolFilename(DEFAULT_TOOL_BASENAME, entryConfig.format)
+        );
+
+        if (entryConfig.format === 'json') {
+          const structuredContent = adapter.buildToolStructuredContent(
+            entry,
+            entryConfig.defaultTool.fields
+          );
+          await fs.writeFile(defaultToolPath, JSON.stringify(structuredContent, null, 2) + '\n');
+        } else {
+          const markdown = adapter.buildToolMarkdown(entry, entryConfig.defaultTool.fields);
+          await fs.writeFile(defaultToolPath, markdown);
+        }
       }
 
-      // Write tool markdown files
+      // Write tool output files
       for (const tool of entryConfig.tools) {
-        const markdown = adapter.buildToolMarkdown(entry, tool.fields);
-        await fs.writeFile(
-          path.join(toolsDir, `${tool.name}.md`),
-          markdown
-        );
+        const toolPath = path.join(toolsDir, getToolFilename(tool.name, entryConfig.format));
+
+        if (entryConfig.format === 'json') {
+          const structuredContent = adapter.buildToolStructuredContent(entry, tool.fields);
+          await fs.writeFile(toolPath, JSON.stringify(structuredContent, null, 2) + '\n');
+        } else {
+          const markdown = adapter.buildToolMarkdown(entry, tool.fields);
+          await fs.writeFile(toolPath, markdown);
+        }
       }
 
       // Download referenced assets

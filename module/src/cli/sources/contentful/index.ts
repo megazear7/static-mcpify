@@ -173,6 +173,26 @@ function fieldToMarkdown(key: string, value: unknown): string {
   return `## ${key}\n\n${String(value)}\n\n`;
 }
 
+function fieldToStructuredContent(value: unknown): unknown {
+  if (value === null || value === undefined) return value;
+
+  if (isRichTextField(value)) {
+    try {
+      return richTextDocumentToMarkdown(
+        value as Parameters<typeof documentToHtmlString>[0]
+      );
+    } catch {
+      return '[Rich text conversion failed]';
+    }
+  }
+
+  if (typeof value !== 'object') {
+    return value;
+  }
+
+  return safeClone(value);
+}
+
 export class ContentfulAdapter implements SourceAdapter {
   private client;
 
@@ -258,6 +278,19 @@ export class ContentfulAdapter implements SourceAdapter {
       }
     }
     return markdown;
+  }
+
+  buildToolStructuredContent(entry: SourceEntry, fieldNames: string[]): Record<string, unknown> {
+    const structuredContent: Record<string, unknown> = {};
+
+    for (const fieldName of fieldNames) {
+      const value = entry.fields[fieldName];
+      if (value !== undefined) {
+        structuredContent[fieldName] = fieldToStructuredContent(value);
+      }
+    }
+
+    return structuredContent;
   }
 
   async downloadAsset(url: string, destPath: string): Promise<void> {

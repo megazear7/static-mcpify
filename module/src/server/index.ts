@@ -2,7 +2,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import fs from 'fs';
 import path from 'path';
-import { DEFAULT_TOOL_FILENAME, EntryConfigSchema } from '../types/index.js';
+import { DEFAULT_TOOL_BASENAME, EntryConfigSchema } from '../types/index.js';
 import type { EntryConfig } from '../types/index.js';
 
 interface ContentTypeInfo {
@@ -10,6 +10,23 @@ interface ContentTypeInfo {
   config: EntryConfig;
   entries: string[];
 }
+
+function toToolIdentifierSegment(value: string): string {
+  return value.replace(/-/g, '_');
+}
+
+function getToolFilename(name: string, format: EntryConfig['format']): string {
+  return `${name}.${format === 'json' ? 'json' : 'md'}`;
+}
+
+function buildStructuredOutputSchema(fieldNames: string[]): z.ZodObject<Record<string, z.ZodOptional<z.ZodUnknown>>> {
+  const shape = Object.fromEntries(fieldNames.map((fieldName) => [fieldName, z.unknown().optional()]));
+  return z.object(shape);
+}
+
+const listToolOutputSchema = z.object({
+  titles: z.array(z.string()),
+});
 
 /**
  * Scans a content directory and returns the content structure.
@@ -74,11 +91,14 @@ export function createMcpServer(contentDir: string): McpServer {
   // ============================================
   // list_assets tool
   // ============================================
-  server.tool(
+  server.registerTool(
     'list_assets',
-    'List all available assets. Optionally filter by name substring.',
     {
-      filter: z.string().optional().describe('Optional substring to filter asset names'),
+      description: 'List all available assets. Optionally filter by name substring.',
+      inputSchema: {
+        filter: z.string().optional().describe('Optional substring to filter asset names'),
+      },
+      outputSchema: listToolOutputSchema,
     },
     async ({ filter }) => {
       let results = assets;
@@ -87,14 +107,10 @@ export function createMcpServer(contentDir: string): McpServer {
         results = assets.filter((a) => a.toLowerCase().includes(lowerFilter));
       }
       return {
-        content: [
-          {
-            type: 'text' as const,
-            text: results.length > 0
-              ? results.join('\n')
-              : 'No assets found matching the filter.',
-          },
-        ],
+        content: [],
+        structuredContent: {
+          titles: results,
+        },
       };
     }
   );
@@ -139,12 +155,18 @@ export function createMcpServer(contentDir: string): McpServer {
   // Per-content-type tools
   // ============================================
   for (const ct of contentTypes) {
+    const contentTypeToolName = toToolIdentifierSegment(ct.name);
+
     // list_<content-type>
-    server.tool(
-      `list_${ct.name}`,
-      `List all ${ct.name} entries. Optionally filter by title substring.`,
+    server.registerTool(
+      `list_${contentTypeToolName}`,
       {
-        filter: z.string().optional().describe('Optional substring to filter entry titles'),
+        description: ct.config.listTool?.description ??
+          `List all ${ct.name} entries. Optionally filter by title substring.`,
+        inputSchema: {
+          filter: z.string().optional().describe('Optional substring to filter entry titles'),
+        },
+        outputSchema: listToolOutputSchema,
       },
       async ({ filter }) => {
         let results = ct.entries;
@@ -153,21 +175,17 @@ export function createMcpServer(contentDir: string): McpServer {
           results = ct.entries.filter((e) => e.toLowerCase().includes(lowerFilter));
         }
         return {
-          content: [
-            {
-              type: 'text' as const,
-              text: results.length > 0
-                ? results.join('\n')
-                : `No ${ct.name} entries found matching the filter.`,
-            },
-          ],
+          content: [],
+          structuredContent: {
+            titles: results,
+          },
         };
       }
     );
 
     if (ct.config.includeMetadataTool) {
       server.tool(
-        `get_${ct.name}_metadata`,
+        `get_${contentTypeToolName}_metadata`,
         `Get the metadata for a specific ${ct.name} entry by title.`,
         {
           title: z.string().describe('The entry title (slug format, e.g., "bob-smith")'),
@@ -193,79 +211,162 @@ export function createMcpServer(contentDir: string): McpServer {
     }
 
     if (ct.config.defaultTool) {
-      server.tool(
-        `get_${ct.name}`,
-        ct.config.defaultTool.description ??
-          `Get the default content for a specific ${ct.name} entry.`,
-        {
-          title: z.string().describe('The entry title (slug format, e.g., "bob-smith")'),
-        },
-        async ({ title }) => {
-          const mdPath = path.join(
-            contentDir,
-            'entries',
-            ct.name,
-            title,
-            'tools',
-            DEFAULT_TOOL_FILENAME
-          );
+      if (ct.config.format === 'json') {
+        server.registerTool(
+          `get_${contentTypeToolName}`,
+          {
+            description: ct.config.defaultTool.description ??
+              `Get the default content for a specific ${ct.name} entry.`,
+            inputSchema: {
+              title: z.string().describe('The entry title (slug format, e.g., "bob-smith")'),
+            },
+            outputSchema: buildStructuredOutputSchema(ct.config.defaultTool.fields),
+          },
+          async ({ title }) => {
+            const jsonPath = path.join(
+              contentDir,
+              'entries',
+              ct.name,
+              title,
+              'tools',
+              getToolFilename(DEFAULT_TOOL_BASENAME, ct.config.format)
+            );
 
-          if (!fs.existsSync(mdPath)) {
+            if (!fs.existsSync(jsonPath)) {
+              return {
+                content: [
+                  {
+                    type: 'text' as const,
+                    text: `Default tool not found for entry "${title}" in ${ct.name}.`,
+                  },
+                ],
+                isError: true,
+              };
+            }
+
             return {
-              content: [
-                {
-                  type: 'text' as const,
-                  text: `Default tool not found for entry "${title}" in ${ct.name}.`,
-                },
-              ],
-              isError: true,
+              content: [],
+              structuredContent: JSON.parse(fs.readFileSync(jsonPath, 'utf-8')) as Record<string, unknown>,
             };
           }
+        );
+      } else {
+        server.tool(
+          `get_${contentTypeToolName}`,
+          ct.config.defaultTool.description ??
+            `Get the default content for a specific ${ct.name} entry.`,
+          {
+            title: z.string().describe('The entry title (slug format, e.g., "bob-smith")'),
+          },
+          async ({ title }) => {
+            const mdPath = path.join(
+              contentDir,
+              'entries',
+              ct.name,
+              title,
+              'tools',
+              getToolFilename(DEFAULT_TOOL_BASENAME, ct.config.format)
+            );
 
-          const content = fs.readFileSync(mdPath, 'utf-8');
-          return {
-            content: [{ type: 'text' as const, text: content }],
-          };
-        }
-      );
+            if (!fs.existsSync(mdPath)) {
+              return {
+                content: [
+                  {
+                    type: 'text' as const,
+                    text: `Default tool not found for entry "${title}" in ${ct.name}.`,
+                  },
+                ],
+                isError: true,
+              };
+            }
+
+            const content = fs.readFileSync(mdPath, 'utf-8');
+            return {
+              content: [{ type: 'text' as const, text: content }],
+            };
+          }
+        );
+      }
     }
 
     // get_<content-type>_<tool-name> for each tool
     for (const tool of ct.config.tools) {
-      server.tool(
-        `get_${ct.name}_${tool.name}`,
-        tool.description ?? `Get the ${tool.name} for a specific ${ct.name} entry.`,
-        {
-          title: z.string().describe('The entry title (slug format, e.g., "bob-smith")'),
-        },
-        async ({ title }) => {
-          const mdPath = path.join(
-            contentDir,
-            'entries',
-            ct.name,
-            title,
-            'tools',
-            `${tool.name}.md`
-          );
+      const namedToolName = toToolIdentifierSegment(tool.name);
 
-          if (!fs.existsSync(mdPath)) {
+      if (ct.config.format === 'json') {
+        server.registerTool(
+          `get_${contentTypeToolName}_${namedToolName}`,
+          {
+            description: tool.description ?? `Get the ${tool.name} for a specific ${ct.name} entry.`,
+            inputSchema: {
+              title: z.string().describe('The entry title (slug format, e.g., "bob-smith")'),
+            },
+            outputSchema: buildStructuredOutputSchema(tool.fields),
+          },
+          async ({ title }) => {
+            const jsonPath = path.join(
+              contentDir,
+              'entries',
+              ct.name,
+              title,
+              'tools',
+              getToolFilename(tool.name, ct.config.format)
+            );
+
+            if (!fs.existsSync(jsonPath)) {
+              return {
+                content: [
+                  {
+                    type: 'text' as const,
+                    text: `Tool "${tool.name}" not found for entry "${title}" in ${ct.name}.`,
+                  },
+                ],
+                isError: true,
+              };
+            }
+
             return {
-              content: [
-                {
-                  type: 'text' as const,
-                  text: `Tool "${tool.name}" not found for entry "${title}" in ${ct.name}.`,
-                },
-              ],
-              isError: true,
+              content: [],
+              structuredContent: JSON.parse(fs.readFileSync(jsonPath, 'utf-8')) as Record<string, unknown>,
             };
           }
+        );
+      } else {
+        server.tool(
+          `get_${contentTypeToolName}_${namedToolName}`,
+          tool.description ?? `Get the ${tool.name} for a specific ${ct.name} entry.`,
+          {
+            title: z.string().describe('The entry title (slug format, e.g., "bob-smith")'),
+          },
+          async ({ title }) => {
+            const mdPath = path.join(
+              contentDir,
+              'entries',
+              ct.name,
+              title,
+              'tools',
+              getToolFilename(tool.name, ct.config.format)
+            );
 
-          const content = fs.readFileSync(mdPath, 'utf-8');
-          return {
-            content: [{ type: 'text' as const, text: content }],
-          };
-        }
-      );
+            if (!fs.existsSync(mdPath)) {
+              return {
+                content: [
+                  {
+                    type: 'text' as const,
+                    text: `Tool "${tool.name}" not found for entry "${title}" in ${ct.name}.`,
+                  },
+                ],
+                isError: true,
+              };
+            }
+
+            const content = fs.readFileSync(mdPath, 'utf-8');
+            return {
+              content: [{ type: 'text' as const, text: content }],
+            };
+          }
+        );
+      }
     }
   }
 

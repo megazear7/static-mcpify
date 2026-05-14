@@ -50,6 +50,16 @@ export const ToolConfigSchema = z.object({
 
 export type ToolConfig = z.infer<typeof ToolConfigSchema>;
 
+export const ToolFormatSchema = z.enum(['string', 'json']);
+
+export type ToolFormat = z.infer<typeof ToolFormatSchema>;
+
+export const ListToolConfigSchema = z.object({
+  description: z.string().optional(),
+});
+
+export type ListToolConfig = z.infer<typeof ListToolConfigSchema>;
+
 export const DefaultToolConfigSchema = z.object({
   description: z.string().optional(),
   fields: z.array(z.string().min(1)).min(1, 'At least one field is required'),
@@ -57,7 +67,7 @@ export const DefaultToolConfigSchema = z.object({
 
 export type DefaultToolConfig = z.infer<typeof DefaultToolConfigSchema>;
 
-export const DEFAULT_TOOL_FILENAME = '_default.md';
+export const DEFAULT_TOOL_BASENAME = '_default';
 
 /**
  * Entry (content-type) configuration stored at
@@ -65,7 +75,9 @@ export const DEFAULT_TOOL_FILENAME = '_default.md';
  */
 export const EntryConfigSchema = z.object({
   contentType: z.string().min(1, 'Content type name is required'),
+  format: ToolFormatSchema.default('string'),
   filters: z.array(EntryFilterSchema).default([]),
+  listTool: ListToolConfigSchema.optional(),
   includeMetadataTool: z.boolean().default(false),
   defaultTool: DefaultToolConfigSchema.optional(),
   tools: z.array(ToolConfigSchema).default([]),

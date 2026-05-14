@@ -135,6 +135,10 @@ The MCP server dynamically creates tools based on the content structure:
 | `get_<type>_metadata` | Get entry metadata JSON by title slug when enabled |
 | `get_<type>_<tool>` | Get a tool's markdown by title slug |
 
+Tool names are MCP-safe identifiers, so dashes in content type IDs or tool names are normalized to underscores. For example, `agent-skill` becomes `get_agent_skill`.
+
+All list tools return MCP `structuredContent` in the shape `{ "titles": ["...", "..."] }` and advertise an `outputSchema` for that response.
+
 For example, with content types `person` (default tool enabled, tools: biography, skills) and `place` (tools: description):
 
 - `list_person` / `get_person` / `get_person_metadata` / `get_person_biography` / `get_person_skills`
@@ -156,8 +160,13 @@ For example, with content types `person` (default tool enabled, tools: biography
 ```json
 {
   "contentType": "person",
+  "format": "json",
+  "listTool": {
+    "description": "List all available people."
+  },
   "includeMetadataTool": true,
   "defaultTool": {
+    "description": "Get the primary biography for a specific person.",
     "fields": ["biography"]
   },
   "tools": [
@@ -173,11 +182,21 @@ For example, with content types `person` (default tool enabled, tools: biography
 }
 ```
 
+`format` is optional and defaults to `"string"`.
+
+`listTool` is optional. When present, it lets you override the description shown for `list_<type>`.
+
 `includeMetadataTool` is optional and defaults to `false`.
 
 `defaultTool` is optional. When present, it controls the content returned by `get_<type>`. When omitted, `get_<type>` is not registered.
 
-`tools` is optional. Each named tool defines a name and which Contentful fields to include. Rich text fields are automatically converted to Markdown.
+`tools` is optional. Each named tool defines a name and which Contentful fields to include.
+
+When `format` is `"string"`, tool output is rendered as concatenated Markdown and returned in the MCP `content` field.
+
+When `format` is `"json"`, each configured field is returned as a property on MCP `structuredContent`, and the generated tool definition includes an `outputSchema`.
+
+List tools always use `structuredContent`, regardless of `format`.
 
 ## Live Examples
 
