@@ -68,6 +68,9 @@ export const DefaultToolConfigSchema = z.object({
 export type DefaultToolConfig = z.infer<typeof DefaultToolConfigSchema>;
 
 export const DEFAULT_TOOL_BASENAME = '_default';
+export const DEFAULT_SERVER_INSTRUCTIONS = [
+  'Use list_* tools before get_* tools when you need to discover available titles.',
+] as const;
 
 /**
  * Entry (content-type) configuration stored at
@@ -90,6 +93,7 @@ export type EntryConfig = z.infer<typeof EntryConfigSchema>;
  */
 export const OutputConfigSchema = z.object({
   source: z.enum(['contentful']).nullable(),
+  instructions: z.array(z.string().min(1)).default([...DEFAULT_SERVER_INSTRUCTIONS]),
 });
 
 export type OutputConfig = z.infer<typeof OutputConfigSchema>;

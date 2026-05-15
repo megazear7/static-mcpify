@@ -8,6 +8,7 @@ export {
 	EntryFilterSchema,
 	FilterOperatorSchema,
 	DEFAULT_TOOL_BASENAME,
+	DEFAULT_SERVER_INSTRUCTIONS,
 } from './config.js';
 export type {
 	ToolConfig,

@@ -1,3 +1,6 @@
 {
-  "source": null
+  "source": null,
+  "instructions": [
+    "Use list_* tools before get_* tools when you need to discover available titles."
+  ]
 }

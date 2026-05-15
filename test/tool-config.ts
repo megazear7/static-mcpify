@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 import { createMcpServer } from '../module/src/server/index.ts';
+import { DEFAULT_SERVER_INSTRUCTIONS } from '../module/src/types/index.ts';
 
 async function main(): Promise<void> {
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'static-mcpify-tool-config-'));
@@ -14,7 +15,7 @@ async function main(): Promise<void> {
 
   await fs.writeFile(
     path.join(tempDir, 'config.json'),
-    JSON.stringify({ source: null }, null, 2) + '\n'
+    JSON.stringify({ source: null, instructions: ['Custom root instruction.'] }, null, 2) + '\n'
   );
 
   await fs.writeFile(
@@ -123,11 +124,18 @@ async function main(): Promise<void> {
   );
 
   const server = createMcpServer(path.join(tempDir, 'content'));
+  const defaultInstructionsServer = createMcpServer(path.join(tempDir, 'missing-root', 'content'));
   const toolNames = Object.keys(server['_registeredTools']);
   const listPersonTool = server['_registeredTools']['list_person'];
   const listAssetsTool = server['_registeredTools']['list_assets'];
   const defaultAgentSkillTool = server['_registeredTools']['get_agent_skill'];
   const namedAgentSkillTool = server['_registeredTools']['get_agent_skill_full_text'];
+
+  assert.equal(server.server['_instructions'], 'Custom root instruction.');
+  assert.equal(
+    defaultInstructionsServer.server['_instructions'],
+    DEFAULT_SERVER_INSTRUCTIONS.join('\n')
+  );
 
   assert.ok(toolNames.includes('list_person'));
   assert.equal(listPersonTool.description, 'List all available people.');

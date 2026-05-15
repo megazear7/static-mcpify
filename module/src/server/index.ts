@@ -2,8 +2,8 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import fs from 'fs';
 import path from 'path';
-import { DEFAULT_TOOL_BASENAME, EntryConfigSchema } from '../types/index.js';
-import type { EntryConfig } from '../types/index.js';
+import { DEFAULT_TOOL_BASENAME, EntryConfigSchema, OutputConfigSchema } from '../types/index.js';
+import type { EntryConfig, OutputConfig } from '../types/index.js';
 
 interface ContentTypeInfo {
   name: string;
@@ -27,6 +27,16 @@ function buildStructuredOutputSchema(fieldNames: string[]): z.ZodObject<Record<s
 const listToolOutputSchema = z.object({
   titles: z.array(z.string()),
 });
+
+function readOutputConfig(contentDir: string): OutputConfig {
+  const configPath = path.join(path.dirname(contentDir), 'config.json');
+
+  if (!fs.existsSync(configPath)) {
+    return OutputConfigSchema.parse({ source: null });
+  }
+
+  return OutputConfigSchema.parse(JSON.parse(fs.readFileSync(configPath, 'utf-8')));
+}
 
 /**
  * Scans a content directory and returns the content structure.
@@ -81,12 +91,18 @@ function scanContentDir(contentDir: string): {
  * Creates an MCP server that exposes tools based on static content files.
  */
 export function createMcpServer(contentDir: string): McpServer {
+  const outputConfig = readOutputConfig(contentDir);
   const { contentTypes, assets } = scanContentDir(contentDir);
 
-  const server = new McpServer({
-    name: 'static-mcpify',
-    version: '1.0.0',
-  });
+  const server = new McpServer(
+    {
+      name: 'static-mcpify',
+      version: '1.0.0',
+    },
+    {
+      instructions: outputConfig.instructions.join('\n'),
+    }
+  );
 
   // ============================================
   // list_assets tool

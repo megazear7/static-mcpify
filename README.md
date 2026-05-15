@@ -151,9 +151,16 @@ For example, with content types `person` (default tool enabled, tools: biography
 
 ```json
 {
-  "source": "contentful"
+  "source": "contentful",
+  "instructions": [
+    "Use list_* tools before get_* tools when you need to discover available titles."
+  ]
 }
 ```
+
+`instructions` is optional. When omitted, it defaults to `"Use list_* tools before get_* tools when you need to discover available titles."`.
+
+These instructions are sent in the MCP `initialize` response as server-level guidance for clients.
 
 ### Entry Config (`content/entries/<type>/config.json`)
 
