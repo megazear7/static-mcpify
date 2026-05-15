@@ -149,6 +149,10 @@ async function main(): Promise<void> {
   assert.ok(!toolNames.includes('get_agent-skill_full-text'));
   assert.ok(defaultAgentSkillTool.outputSchema);
   assert.ok(namedAgentSkillTool.outputSchema);
+  assert.equal(defaultAgentSkillTool.outputSchema.safeParse({ content: 'ok' }).success, true);
+  assert.equal(defaultAgentSkillTool.outputSchema.safeParse({ content: 123 }).success, false);
+  assert.equal(namedAgentSkillTool.outputSchema.safeParse({ content: 'ok' }).success, true);
+  assert.equal(namedAgentSkillTool.outputSchema.safeParse({ content: 123 }).success, false);
 
   const listPersonResult = await listPersonTool.handler({ filter: undefined }, {} as never);
   const listAssetsResult = await listAssetsTool.handler({ filter: undefined }, {} as never);

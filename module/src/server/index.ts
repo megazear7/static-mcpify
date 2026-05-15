@@ -19,8 +19,8 @@ function getToolFilename(name: string, format: EntryConfig['format']): string {
   return `${name}.${format === 'json' ? 'json' : 'md'}`;
 }
 
-function buildStructuredOutputSchema(fieldNames: string[]): z.ZodObject<Record<string, z.ZodOptional<z.ZodUnknown>>> {
-  const shape = Object.fromEntries(fieldNames.map((fieldName) => [fieldName, z.unknown().optional()]));
+function buildStructuredOutputSchema(fieldNames: string[]): z.ZodObject<Record<string, z.ZodString>> {
+  const shape = Object.fromEntries(fieldNames.map((fieldName) => [fieldName, z.string()]));
   return z.object(shape);
 }
 
