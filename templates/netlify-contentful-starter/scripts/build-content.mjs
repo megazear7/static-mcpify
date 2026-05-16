@@ -15,7 +15,7 @@ if (!token && !spaceId) {
 }
 
 console.log('Detected Contentful credentials. Rebuilding checked-in sample content from your space...');
-execFileSync('npx', ['smcp', 'build', '--output', '.'], {
+execFileSync('npm', ['exec', 'smcp', '--', 'build', '--output', '.'], {
   stdio: 'inherit',
   shell: process.platform === 'win32',
 });
