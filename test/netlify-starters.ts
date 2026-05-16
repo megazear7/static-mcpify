@@ -57,9 +57,11 @@ async function requestMcp(
 
 async function main(): Promise<void> {
   assertExists('starters/netlify-static-starter/package.json');
+  assertExists('starters/netlify-static-starter/README.md');
   assertExists('starters/netlify-static-starter/netlify.toml');
   assertExists('starters/netlify-static-starter/netlify/functions/mcp.js');
   assertExists('starters/netlify-contentful-starter/package.json');
+  assertExists('starters/netlify-contentful-starter/README.md');
   assertExists('starters/netlify-contentful-starter/netlify.toml');
   assertExists('starters/netlify-contentful-starter/netlify/functions/mcp.js');
   assertExists('starters/netlify-contentful-starter/.env.example');

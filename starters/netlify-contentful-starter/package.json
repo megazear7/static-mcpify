@@ -6,7 +6,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "echo 'using bundled contentful sample content'",
+    "build": "echo 'contentful starter uses bundled sample content'",
     "build:contentful": "npx smcp build --output ."
   },
   "dependencies": {
