@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>static-mcpify Examples</title>
+  <meta name="description" content="Walkthroughs for static filesystem and Contentful examples in static-mcpify.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html"><span class="brand-mark">⚡</span> static-mcpify</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="docs.html">Docs</a>
+        <a href="examples.html" aria-current="page">Examples</a>
+        <a href="deploy.html">Deploy</a>
+        <a href="about.html">About</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="button-outline" href="https://github.com/megazear7/static-mcpify">GitHub</a>
+        <a class="button" href="https://www.npmjs.com/package/static-mcpify">npm</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">Example walkthroughs</h1>
+    <p class="page-subtitle">Step-by-step guides for both shipped examples.</p>
+
+    <section class="section card">
+      <h2>Static filesystem example</h2>
+      <p>Use this when you already have local content files and want a zero-CMS setup.</p>
+      <div class="steps">
+        <div class="step"><span class="step-badge">1</span><div><strong>Start from included content</strong><p>Use <code>examples/static/content</code> as the baseline layout.</p></div></div>
+        <div class="step"><span class="step-badge">2</span><div><strong>Run the standalone server</strong><p><code>tsx module/src/server/standalone.ts examples/static/content 3100</code></p></div></div>
+        <div class="step"><span class="step-badge">3</span><div><strong>Connect your MCP client</strong><p>Point client URL to <code>http://localhost:3100/mcp</code>.</p></div></div>
+      </div>
+      <pre class="code"><code>{
+  "static-example": {
+    "type": "http",
+    "url": "https://static-mcpify.alexlockhart.me/example/static/mcp"
+  }
+}</code></pre>
+    </section>
+
+    <section class="section card">
+      <h2>Contentful integration example</h2>
+      <p>Use this to build content from Contentful during local builds or Netlify deploys.</p>
+      <div class="steps">
+        <div class="step"><span class="step-badge">1</span><div><strong>Configure env vars</strong><p>Set <code>CONTENTFUL_API_TOKEN</code> and <code>SPACE_ID</code>.</p></div></div>
+        <div class="step"><span class="step-badge">2</span><div><strong>Build content</strong><p>Run <code>npm run build:contentful</code> to generate output in <code>examples/contentful/content</code>.</p></div></div>
+        <div class="step"><span class="step-badge">3</span><div><strong>Serve endpoint</strong><p>Use Netlify function route <code>/example/contentful/mcp</code>.</p></div></div>
+      </div>
+      <pre class="code"><code>{
+  "contentful-example": {
+    "type": "http",
+    "url": "https://static-mcpify.alexlockhart.me/example/contentful/mcp"
+  }
+}</code></pre>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>⚡ static-mcpify examples</span>
+      <span><a href="docs.html">Docs</a> · <a href="deploy.html">Deploy</a></span>
+    </div>
+  </footer>
+</body>
+</html>

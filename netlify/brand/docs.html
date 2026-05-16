@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>static-mcpify Docs</title>
+  <meta name="description" content="Documentation for the static-mcpify npm package.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html"><span class="brand-mark">⚡</span> static-mcpify</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="docs.html" aria-current="page">Docs</a>
+        <a href="examples.html">Examples</a>
+        <a href="deploy.html">Deploy</a>
+        <a href="about.html">About</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="button-outline" href="https://github.com/megazear7/static-mcpify">GitHub</a>
+        <a class="button" href="https://www.npmjs.com/package/static-mcpify">npm</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">Package documentation</h1>
+    <p class="page-subtitle">How to install, initialize, build, and serve with <code>static-mcpify</code>.</p>
+
+    <section class="section">
+      <h2>Install</h2>
+      <pre class="code"><code>npm install static-mcpify</code></pre>
+      <p>Set Contentful credentials in a <code>.env</code> file if you are using the Contentful adapter.</p>
+      <pre class="code"><code>CONTENTFUL_API_TOKEN=your_token
+SPACE_ID=your_space</code></pre>
+    </section>
+
+    <section class="section">
+      <h2>Initialize project config</h2>
+      <pre class="code"><code>npx smcp init --output my-mcp</code></pre>
+      <p>The wizard lets you choose content types and define tool behavior for each type.</p>
+    </section>
+
+    <section class="section">
+      <h2>Build static artifacts</h2>
+      <pre class="code"><code>npx smcp build --output my-mcp
+npx smcp build --output my-mcp --content-type blog</code></pre>
+      <p>Build writes content into the static structure below:</p>
+      <pre class="code"><code>my-mcp/
+├── config.json
+└── content/
+    ├── assets/
+    └── entries/
+        └── &lt;type&gt;/&lt;slug&gt;/
+            ├── data.json
+            └── tools/*.md</code></pre>
+    </section>
+
+    <section class="section">
+      <h2>Serve MCP endpoints</h2>
+      <div class="grid grid-2">
+        <article class="card">
+          <h3>Serverless handler</h3>
+          <pre class="code"><code>import { handleMcpRequest } from 'static-mcpify/web-handler';
+
+export default async (req: Request) =&gt; {
+  if (req.method === 'GET') return new Response('{"status":"ok"}');
+  return handleMcpRequest('./my-mcp/content', req);
+};</code></pre>
+        </article>
+        <article class="card">
+          <h3>Express handler</h3>
+          <pre class="code"><code>import { handleMcpRequest } from 'static-mcpify/handler';
+app.all('/mcp', (req, res) =&gt; handleMcpRequest('./my-mcp/content', req, res));</code></pre>
+        </article>
+      </div>
+      <p class="callout">For exhaustive technical details, use the root README in this repository as the reference source of truth.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>⚡ static-mcpify docs</span>
+      <span><a href="examples.html">Examples</a> · <a href="deploy.html">Deploy</a></span>
+    </div>
+  </footer>
+</body>
+</html>

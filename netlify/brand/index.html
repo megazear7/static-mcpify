@@ -3,602 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>static-mcpify — Build Static MCP Servers from any content Source</title>
-  <meta name="description" content="Transform structured content into powerful MCP (Model Context Protocol) servers. Pull from Contentful, deploy anywhere.">
+  <title>static-mcpify | Static MCP branding site</title>
+  <meta name="description" content="Build static MCP servers from your content with static-mcpify.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="nav">
-    <div class="nav-inner">
-      <a href="#" class="nav-brand">
-        <span class="nav-logo">⚡</span>
-        <span class="nav-name">static-mcpify</span>
-      </a>
-      <div class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#how-it-works">How It Works</a>
-        <a href="#serve">Serve</a>
-        <a href="#deploy">Deploy</a>
-        <a href="#examples">Examples</a>
-        <a href="https://www.npmjs.com/package/static-mcpify" class="nav-cta">npm</a>
-        <a href="https://github.com/megazear7/static-mcpify" class="nav-cta">GitHub</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <header class="hero">
-    <div class="hero-glow"></div>
-    <div class="container">
-      <div class="hero-badge">Open Source &middot; TypeScript &middot; MCP</div>
-      <h1 class="hero-title">
-        Turn <span class="gradient-text">any content</span> into an
-        <span class="gradient-text">MCP server</span>
-      </h1>
-      <p class="hero-subtitle">
-        static-mcpify pulls structured content from your CMS, builds it into static files,
-        and serves them as a fully-featured
-        <strong>Model Context Protocol</strong> server. Your AI agents get instant access
-        to your content — no database, no runtime dependencies.
-      </p>
-      <div class="hero-actions">
-        <a href="#how-it-works" class="btn btn-primary">Get Started</a>
-        <a href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify" class="btn btn-secondary">Deploy to Netlify</a>
-      </div>
-      <div class="hero-code">
-        <div class="code-header">
-          <span class="code-dot red"></span>
-          <span class="code-dot yellow"></span>
-          <span class="code-dot green"></span>
-          <span class="code-title">Terminal</span>
-        </div>
-        <pre><code><span class="code-comment"># Install static-mcpify</span>
-<span class="code-prompt">$</span> npm install static-mcpify
-
-<span class="code-comment"># Initialize your content structure</span>
-<span class="code-prompt">$</span> npx smcp init --output my-mcp
-
-<span class="code-comment"># Pull content and build static files</span>
-<span class="code-prompt">$</span> npx smcp build --output my-mcp
-
-<span class="code-comment"># Your MCP server is ready! 🚀</span></code></pre>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html"><span class="brand-mark">⚡</span> static-mcpify</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="docs.html">Docs</a>
+        <a href="examples.html">Examples</a>
+        <a href="deploy.html">Deploy</a>
+        <a href="about.html">About</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="button-outline" href="https://github.com/megazear7/static-mcpify">GitHub</a>
+        <a class="button" href="https://www.npmjs.com/package/static-mcpify">npm</a>
       </div>
     </div>
   </header>
 
-  <!-- Features -->
-  <section id="features" class="section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Built for the <span class="gradient-text">AI era</span></h2>
-        <p class="section-subtitle">Everything you need to bridge your content with AI agents</p>
+  <main>
+    <section class="hero container">
+      <h1>Turn structured content into a fast, static MCP server.</h1>
+      <p>
+        static-mcpify pulls content from CMS sources (including Contentful), writes static Markdown + JSON artifacts,
+        then serves that content through MCP tools your AI agents can use immediately.
+      </p>
+      <div class="nav-actions" style="margin-top: 1rem;">
+        <a class="button" href="docs.html">Read docs</a>
+        <a class="button-outline" href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify">Deploy on Netlify</a>
       </div>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">📦</div>
-          <h3>Static by Design</h3>
-          <p>Content is pre-built into static files. No database queries at runtime. Lightning fast responses for your AI agents.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔌</div>
-          <h3>Pluggable Sources</h3>
-          <p>Built with an adapter pattern. Contentful support out of the box, with room to add any content source you need.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🤖</div>
-          <h3>MCP Native</h3>
-          <p>Implements the Model Context Protocol with streamable HTTP transport. Works with any MCP-compatible AI client.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🛠️</div>
-          <h3>Dynamic Tools</h3>
-          <p>Tools are auto-generated from your content structure. Mix default entry tools, optional metadata tools, and named field-specific tools per content type.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🚀</div>
-          <h3>Deploy Anywhere</h3>
-          <p>Runs on any Node.js server, Netlify Functions, Cloudflare Workers, Deno, or Bun. First-class serverless support.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📝</div>
-          <h3>TypeScript First</h3>
-          <p>Full TypeScript codebase with Zod validation. Type-safe from config to runtime, with descriptive error messages.</p>
-        </div>
+    </section>
+
+    <section class="section container">
+      <h2>Why static-mcpify</h2>
+      <div class="grid grid-3">
+        <article class="card"><h3>Static performance</h3><p>No runtime DB dependencies. Content is prebuilt into files.</p></article>
+        <article class="card"><h3>MCP-first</h3><p>Auto-generated list/get tools from your content folder structure.</p></article>
+        <article class="card"><h3>Deploy anywhere</h3><p>Works in Netlify Functions and standard Node servers.</p></article>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- How it works -->
-  <section id="how-it-works" class="section section-dark">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">How it <span class="gradient-text">works</span></h2>
-        <p class="section-subtitle">Three steps from content to AI-accessible MCP server</p>
+    <section class="section container">
+      <h2>Use-case showcase</h2>
+      <div class="grid grid-2">
+        <article class="card">
+          <h3>Knowledge bases</h3>
+          <p>Expose internal operations guides, runbooks, and standards to AI assistants via MCP.</p>
+        </article>
+        <article class="card">
+          <h3>Docs sites</h3>
+          <p>Convert existing docs content into structured tools for accurate retrieval and summarization.</p>
+        </article>
+        <article class="card">
+          <h3>Content marketing</h3>
+          <p>Serve product pages, campaign docs, and launch notes directly to AI workflows.</p>
+        </article>
+        <article class="card">
+          <h3>Partner portals</h3>
+          <p>Deliver partner-facing guides with consistent MCP tool contracts and predictable outputs.</p>
+        </article>
       </div>
+    </section>
+  </main>
 
-      <div class="steps">
-        <div class="step">
-          <div class="step-number">01</div>
-          <div class="step-content">
-            <h3>Initialize</h3>
-            <p>Run <code>smcp init</code> to set up your output directory. The CLI connects to your Contentful space and lets you pick content types and configure named tools. You can then tune each entry config with an optional <code>format</code>, optional <code>defaultTool</code>, optional metadata exposure, and any number of named tools.</p>
-            <div class="step-code">
-              <pre><code><span class="code-prompt">$</span> npx smcp init --output my-mcp
-
-<span class="code-comment"># Creates:</span>
-<span class="code-comment">#   my-mcp/config.json</span>
-<span class="code-comment">#   my-mcp/content/entries/&lt;type&gt;/config.json</span>
-<span class="code-comment">#   my-mcp/content/assets/</span></code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="step-number">02</div>
-          <div class="step-content">
-            <h3>Build</h3>
-            <p>Run <code>smcp build</code> to pull content from your CMS and generate <code>data.json</code>, string or JSON tool artifacts depending on <code>format</code>, and downloaded assets.</p>
-            <div class="step-code">
-              <pre><code><span class="code-prompt">$</span> npx smcp build --output my-mcp
-
-<span class="code-comment"># Generates per entry:</span>
-<span class="code-comment">#   content/entries/person/bob-smith/data.json</span>
-<span class="code-comment">#   content/entries/person/bob-smith/tools/_default.md</span>
-<span class="code-comment">#   content/entries/person/bob-smith/tools/biography.md</span>
-<span class="code-comment">#   content/entries/person/bob-smith/tools/skills.md</span></code></pre>
-            </div>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="step-number">03</div>
-          <div class="step-content">
-            <h3>Serve</h3>
-            <p>The MCP server reads your static files and auto-generates tools. Connect any MCP client and start querying. Dashes in content type IDs or tool names are normalized to underscores in the MCP tool names.</p>
-            <div class="step-code">
-              <pre><code><span class="code-comment"># Auto-generated MCP tools:</span>
-list_person           <span class="code-comment"># Filter &amp; list people</span>
-get_person            <span class="code-comment"># Get default tool markdown</span>
-get_person_metadata   <span class="code-comment"># Get entry metadata JSON</span>
-get_person_biography  <span class="code-comment"># Get biography markdown</span>
-get_person_skills     <span class="code-comment"># Get skills markdown</span>
-list_assets           <span class="code-comment"># List all assets</span>
-get_asset             <span class="code-comment"># Get asset details by name</span></code></pre>
-            </div>
-            <p style="color: var(--text-secondary); margin-top: 12px; font-size: 0.9rem;">
-              List tools always return <code>structuredContent</code> in the shape <code>{ titles: [...] }</code> and advertise an <code>outputSchema</code>. With <code>format: "string"</code>, non-list tools return concatenated Markdown in MCP <code>content</code>. With <code>format: "json"</code>, non-list tools return per-field JSON in <code>structuredContent</code> and advertise an <code>outputSchema</code>.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="file-structure">
-        <h3>📁 Output Structure</h3>
-        <pre><code>my-mcp/
-├── config.json                          <span class="code-comment"># Source configuration + server instructions</span>
-└── content/
-    ├── assets/                          <span class="code-comment"># Asset metadata (JSON)</span>
-    │   └── photo.json
-    └── entries/
-        ├── person/
-        │   ├── config.json              <span class="code-comment"># defaultTool + tools: biography, skills</span>
-        │   ├── bob-smith/
-        │   │   ├── data.json            <span class="code-comment"># All non-rich-text fields</span>
-        │   │   └── tools/
-        │   │       ├── _default.md      <span class="code-comment"># Output for get_person</span>
-        │   │       ├── biography.md     <span class="code-comment"># Output for get_person_biography</span>
-        │   │       └── skills.md
-        │   └── steve-baker/
-        │       ├── data.json
-        │       └── tools/
-        │           ├── _default.md
-        │           ├── biography.md
-        │           └── skills.md
-        └── place/
-            ├── config.json
-            └── work-site/
-                ├── data.json
-                └── tools/
-                    └── description.md</code></pre>
-        <p style="color: var(--text-secondary); margin-top: 12px; font-size: 0.95rem;">
-          <code>_default.md</code> is only generated when <code>defaultTool</code> is configured for that entry type. Named files like <code>biography.md</code> or <code>description.md</code> are only generated for tools listed under <code>tools</code>.
-        </p>
-        <p style="color: var(--text-secondary); margin-top: 12px; font-size: 0.95rem;">
-          The root <code>config.json</code> can also include server-level <code>instructions</code>. These are returned in the MCP <code>initialize</code> response so clients can apply global guidance like when to prefer <code>list_*</code> tools before <code>get_*</code> tools.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Serve -->
-  <section id="serve" class="section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Two ways to <span class="gradient-text">serve</span></h2>
-        <p class="section-subtitle">A web standard handler for serverless, and a Node.js handler for Express</p>
-      </div>
-
-      <div class="two-col">
-        <div class="col-code">
-          <div class="code-block">
-            <div class="code-header">
-              <span class="code-dot red"></span>
-              <span class="code-dot yellow"></span>
-              <span class="code-dot green"></span>
-              <span class="code-title">Serverless — static-mcpify/web-handler</span>
-            </div>
-            <pre><code><span class="code-comment">// Netlify Functions, Cloudflare Workers, Deno, Bun</span>
-import { handleMcpRequest } from 'static-mcpify/web-handler';
-
-export default async (req: Request) =&gt; {
-  if (req.method === 'GET') {
-    return new Response(
-      JSON.stringify({ status: 'ok' }),
-      { headers: { 'Content-Type': 'application/json' } }
-    );
-  }
-
-  return handleMcpRequest('./my-mcp/content', req);
-};</code></pre>
-          </div>
-
-          <p style="color: var(--text-secondary); margin-top: 12px; font-size: 0.9rem;">
-            Takes a web standard <code>Request</code>, returns a <code>Response</code>.
-            Uses JSON responses instead of SSE streaming — works reliably in stateless serverless environments.
-          </p>
-        </div>
-
-        <div class="col-code">
-          <div class="code-block">
-            <div class="code-header">
-              <span class="code-dot red"></span>
-              <span class="code-dot yellow"></span>
-              <span class="code-dot green"></span>
-              <span class="code-title">Express — static-mcpify/handler</span>
-            </div>
-            <pre><code><span class="code-comment">// Traditional Node.js HTTP server</span>
-import { handleMcpRequest } from 'static-mcpify/handler';
-import express from 'express';
-
-const app = express();
-app.use(express.json());
-
-app.all('/mcp', async (req, res) =&gt; {
-  await handleMcpRequest(
-    './my-mcp/content', req, res
-  );
-});
-
-app.listen(3000);</code></pre>
-          </div>
-
-          <p style="color: var(--text-secondary); margin-top: 12px; font-size: 0.9rem;">
-            Works with Node.js <code>IncomingMessage</code> / <code>ServerResponse</code>.
-            Uses SSE streaming for real-time responses in long-lived server processes.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Deploy -->
-  <section id="deploy" class="section section-dark">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Deploy to <span class="gradient-text">Netlify</span></h2>
-        <p class="section-subtitle">A concrete example: this project's own Netlify deployment</p>
-      </div>
-
-      <div class="deploy-content">
-        <div class="deploy-steps">
-          <div class="deploy-step" style="text-align: center; margin-bottom: 2rem;">
-            <a href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify">
-              <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" style="height: 44px;">
-            </a>
-          </div>
-          <div class="deploy-step">
-            <div class="deploy-step-icon">1</div>
-            <div>
-              <h3>Create a Netlify Function</h3>
-              <p>Each MCP endpoint is a small function that imports <code>handleMcpRequest</code> from <code>static-mcpify/web-handler</code> and points it at your content directory.</p>
-            </div>
-          </div>
-          <div class="deploy-step">
-            <div class="deploy-step-icon">2</div>
-            <div>
-              <h3>Configure netlify.toml</h3>
-              <p>Set the functions directory and use <code>node_bundler = "nft"</code> (Node File Tracing) to resolve workspace dependencies.</p>
-            </div>
-          </div>
-          <div class="deploy-step">
-            <div class="deploy-step-icon">3</div>
-            <div>
-              <h3>Push &amp; Deploy</h3>
-              <p>Connect your repo to Netlify and push. Your MCP server is live and accessible to any MCP client.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="code-block deploy-code">
-          <div class="code-header">
-            <span class="code-dot red"></span>
-            <span class="code-dot yellow"></span>
-            <span class="code-dot green"></span>
-            <span class="code-title">netlify/functions/static-mcp.ts</span>
-          </div>
-          <pre><code>import type { Context } from '@netlify/functions';
-import { handleMcpRequest } from 'static-mcpify/web-handler';
-import path from 'path';
-
-const contentDir = path.join(process.cwd(), 'examples/static/content');
-
-export default async (req: Request, _context: Context): Promise&lt;Response&gt; =&gt; {
-  if (req.method === 'GET') {
-    return new Response(
-      JSON.stringify({ status: 'ok', server: 'static-mcp' }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    );
-  }
-
-  return handleMcpRequest(contentDir, req);
-};
-
-export const config = {
-  path: '/example/static/mcp',
-  includedFiles: ['../../examples/static/content/**'],
-};</code></pre>
-        </div>
-
-        <div class="code-block deploy-code">
-          <div class="code-header">
-            <span class="code-dot red"></span>
-            <span class="code-dot yellow"></span>
-            <span class="code-dot green"></span>
-            <span class="code-title">netlify.toml</span>
-          </div>
-          <pre><code>[build]
-  publish = "netlify/brand"
-  command = "npm run build:ts &amp;&amp; npm run build:contentful"
-
-[build.environment]
-  NODE_VERSION = "22"
-
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "nft"</code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contentful -->
-  <section id="contentful" class="section">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">
-          <span class="gradient-text">Contentful</span> as a source
-        </h2>
-        <p class="section-subtitle">First-class integration with the Contentful CMS</p>
-      </div>
-
-      <div class="two-col">
-        <div class="col-text">
-          <h3>Setup in minutes</h3>
-          <ol class="setup-steps">
-            <li>
-              <strong>Set environment variables</strong>
-              <p>Add your Contentful API token and Space ID to a <code>.env</code> file.</p>
-            </li>
-            <li>
-              <strong>Initialize</strong>
-              <p>Run <code>smcp init --output my-mcp</code>. The CLI will connect to your Contentful space, show you all available content types, and let you pick which fields to expose as named tools.</p>
-            </li>
-            <li>
-              <strong>Build</strong>
-              <p>Run <code>smcp build --output my-mcp</code>. All entries are pulled, rich text fields converted to markdown, default tool output is written to <code>_default.md</code> when configured, and assets are downloaded.</p>
-            </li>
-            <li>
-              <strong>Deploy</strong>
-              <p>Push to Netlify (or any server) and your MCP endpoint is live.</p>
-            </li>
-          </ol>
-        </div>
-        <div class="col-code">
-          <div class="code-block">
-            <div class="code-header">
-              <span class="code-dot red"></span>
-              <span class="code-dot yellow"></span>
-              <span class="code-dot green"></span>
-              <span class="code-title">.env</span>
-            </div>
-            <pre><code>CONTENTFUL_API_TOKEN=nP...your_token...mo
-SPACE_ID=1x...your_space...mb</code></pre>
-          </div>
-
-          <div class="code-block">
-            <div class="code-header">
-              <span class="code-dot red"></span>
-              <span class="code-dot yellow"></span>
-              <span class="code-dot green"></span>
-              <span class="code-title">my-mcp/config.json</span>
-            </div>
-            <pre><code>{
-  "source": "contentful",
-  "instructions": [
-    "Use list_* tools before get_* tools when you need to discover available titles."
-  ]
-}</code></pre>
-          </div>
-
-          <div class="code-block">
-            <div class="code-header">
-              <span class="code-dot red"></span>
-              <span class="code-dot yellow"></span>
-              <span class="code-dot green"></span>
-              <span class="code-title">my-mcp/content/entries/blog/config.json</span>
-            </div>
-            <pre><code>{
-  "contentType": "blog",
-  "format": "json",
-  "listTool": {
-    "description": "List all available blog posts."
-  },
-  "includeMetadataTool": true,
-  "defaultTool": {
-    "description": "Get the primary body content for a specific blog post.",
-    "fields": ["body"]
-  },
-  "tools": [
-    {
-      "name": "summary",
-      "fields": ["summary", "tags"]
-    },
-    {
-      "name": "body",
-      "fields": ["body"]
-    }
-  ]
-}</code></pre>
-          </div>
-
-          <p style="color: var(--text-secondary); margin-top: 12px; font-size: 0.9rem;">
-            Root-level <code>instructions</code> is optional and defaults to <code>"Use list_* tools before get_* tools when you need to discover available titles."</code>. <code>format</code> defaults to <code>"string"</code>. <code>listTool</code>, <code>defaultTool</code>, and <code>tools</code> are all optional. <code>includeMetadataTool</code> defaults to <code>false</code>, so a content type can expose only a list tool, only a default tool, only named tools, or any combination including metadata.
-          </p>
-        </div>
-      </div>
-
-      <div class="contentful-features">
-        <div class="cf-feature">
-          <strong>Rich Text Conversion</strong>
-          <p>Contentful rich text fields are automatically converted to clean Markdown for optimal AI consumption.</p>
-        </div>
-        <div class="cf-feature">
-          <strong>Asset Downloads</strong>
-          <p>Referenced images and files are automatically downloaded to the local assets directory.</p>
-        </div>
-        <div class="cf-feature">
-          <strong>Selective Building</strong>
-          <p>Use <code>--content-type</code> flags to rebuild only specific content types.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Examples -->
-  <section id="examples" class="section section-dark">
-    <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Try the <span class="gradient-text">examples</span></h2>
-        <p class="section-subtitle">Live MCP servers you can connect to right now</p>
-      </div>
-
-      <div class="examples-grid">
-        <div class="example-card">
-          <div class="example-icon">📄</div>
-          <h3>Static Content Example</h3>
-          <p>A simple MCP server with pre-built static content about people and places. No CMS credentials needed. This example demonstrates named tools without default or metadata tools.</p>
-          <div class="example-content">
-            <strong>Content Types:</strong>
-            <ul>
-              <li><strong>Person:</strong> Bob Smith &amp; Steve Baker with biography and skills</li>
-              <li><strong>Place:</strong> The Big Mountain &amp; Work Site with descriptions</li>
-            </ul>
-          </div>
-          <div class="code-block example-code">
-            <div class="code-header">
-              <span class="code-title">Add to VS Code mcp.json</span>
-              <button class="copy-btn" onclick="copyToClipboard('static-code')">Copy</button>
-            </div>
-            <pre><code id="static-code">{
-  "static-example": {
-    "type": "http",
-    "url": "https://static-mcpify.alexlockhart.me/example/static/mcp"
-  }
-}</code></pre>
-          </div>
-        </div>
-
-        <div class="example-card">
-          <div class="example-icon">⚔️</div>
-          <h3>Contentful Example</h3>
-          <p>An MCP server built from Contentful content at deploy time, featuring adventures and campaigns from a fantasy world. This example demonstrates <code>defaultTool</code>, optional named tools, and metadata exposure.</p>
-          <div class="example-content">
-            <strong>Content Types:</strong>
-            <ul>
-              <li><strong>Adventure:</strong> 7 epic adventures with a default description tool, named description tool, and metadata tool</li>
-              <li><strong>Campaign:</strong> 2 campaign arcs exposed through a default tool only</li>
-            </ul>
-          </div>
-          <div class="code-block example-code">
-            <div class="code-header">
-              <span class="code-title">Add to VS Code mcp.json</span>
-              <button class="copy-btn" onclick="copyToClipboard('contentful-code')">Copy</button>
-            </div>
-            <pre><code id="contentful-code">{
-  "contentful-example": {
-    "type": "http",
-    "url": "https://static-mcpify.alexlockhart.me/example/contentful/mcp"
-  }
-}</code></pre>
-          </div>
-        </div>
-      </div>
-
-      <div class="example-note">
-        <p><strong>Tip:</strong> These are live MCP servers running on Netlify Functions. Copy the JSON above into your VS Code <code>mcp.json</code> file to connect with GitHub Copilot or any MCP client.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="section cta-section">
-    <div class="container">
-      <h2 class="cta-title">Ready to <span class="gradient-text">mcpify</span> your content?</h2>
-      <p class="cta-subtitle">Get started in under 5 minutes. Open source, free forever.</p>
-      <div class="hero-actions">
-        <a href="https://www.npmjs.com/package/static-mcpify" class="btn btn-primary">Install from npm</a>
-        <a href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify" class="btn btn-secondary">Deploy to Netlify</a>
-        <a href="https://github.com/megazear7/static-mcpify" class="btn btn-secondary">View on GitHub</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <span class="nav-logo">⚡</span>
-          <span>static-mcpify</span>
-        </div>
-        <p class="footer-text">Built with TypeScript, MCP SDK, and lots of ☕</p>
-        <p class="footer-text">Made by <a href="https://www.alexlockhart.me/" style="color: #888;">Alex Lockhart</a></p>
-      </div>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>⚡ static-mcpify branding site</span>
+      <span><a href="docs.html">Docs</a> · <a href="examples.html">Examples</a> · <a href="deploy.html">Deploy</a></span>
     </div>
   </footer>
-
-  <script>
-    function copyToClipboard(elementId) {
-      const codeElement = document.getElementById(elementId);
-      const text = codeElement.textContent || codeElement.innerText;
-
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target;
-        const originalText = btn.textContent;
-        btn.textContent = 'Copied!';
-        btn.style.background = 'var(--green)';
-        setTimeout(() => {
-          btn.textContent = originalText;
-          btn.style.background = '';
-        }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy: ', err);
-      });
-    }
-  </script>
 </body>
 </html>
