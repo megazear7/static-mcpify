@@ -6,7 +6,7 @@ Turn any structured content into a static **MCP (Model Context Protocol)** serve
 
 `static-mcpify` pulls content from your CMS (currently Contentful), builds it into static Markdown and JSON files, then serves those files as a fully-featured MCP server. Your AI agents get instant access to your content — no database, no runtime dependencies.
 
-**[Website](https://static-mcpify.alexlockhart.me/)** · **[npm](https://www.npmjs.com/package/static-mcpify)** · **[GitHub](https://github.com/megazear7/static-mcpify)**
+**[Website](https://static-mcpify.alexlockhart.me/)** · **[Docs](https://static-mcpify.alexlockhart.me/docs.html)** · **[Examples](https://static-mcpify.alexlockhart.me/examples.html)** · **[Deploy Guide](https://static-mcpify.alexlockhart.me/deploy.html)** · **[npm](https://www.npmjs.com/package/static-mcpify)** · **[GitHub](https://github.com/megazear7/static-mcpify)**
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify)
 

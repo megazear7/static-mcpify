@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About static-mcpify</title>
+  <meta name="description" content="About static-mcpify and MCP-focused static content architecture.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="index.html"><span class="brand-mark">⚡</span> static-mcpify</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="docs.html">Docs</a>
+        <a href="examples.html">Examples</a>
+        <a href="deploy.html">Deploy</a>
+        <a href="about.html" aria-current="page">About</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="button-outline" href="https://github.com/megazear7/static-mcpify">GitHub</a>
+        <a class="button" href="https://www.npmjs.com/package/static-mcpify">npm</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">About the project</h1>
+    <p class="page-subtitle">static-mcpify helps teams publish content to MCP without runtime complexity.</p>
+
+    <section class="section grid grid-2">
+      <article class="card">
+        <h2>What it is</h2>
+        <p>A TypeScript-first npm package and CLI that builds static content artifacts and serves them as MCP tools.</p>
+      </article>
+      <article class="card">
+        <h2>Design principles</h2>
+        <ul>
+          <li>Static outputs for reliability and speed</li>
+          <li>Descriptive configuration + schema validation</li>
+          <li>Simple deploy paths for serverless and Node</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="section">
+      <h2>Use-case highlights</h2>
+      <div class="grid grid-3">
+        <article class="card"><h3>Product docs AI assistant</h3><p>Keep docs in CMS, ship static MCP tools for support copilots.</p></article>
+        <article class="card"><h3>Customer onboarding portals</h3><p>Expose playbooks, tutorials, and FAQ content as reliable tools.</p></article>
+        <article class="card"><h3>Internal engineering knowledge</h3><p>Package architecture docs and standards for team-wide AI access.</p></article>
+      </div>
+    </section>
+
+    <section class="section card">
+      <h2>Project links</h2>
+      <p><a href="https://github.com/megazear7/static-mcpify">GitHub repository</a></p>
+      <p><a href="https://www.npmjs.com/package/static-mcpify">npm package</a></p>
+      <p><a href="deploy.html">Netlify deployment guide</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>⚡ static-mcpify</span>
+      <span>Built for MCP-first teams</span>
+    </div>
+  </footer>
+</body>
+</html>
