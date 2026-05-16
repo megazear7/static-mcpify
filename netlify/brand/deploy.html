@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>static-mcpify Netlify Deployment</title>
-  <meta name="description" content="Netlify deployment guide for static-mcpify brand site and MCP endpoints.">
+  <meta name="description" content="Netlify deployment guide for static-mcpify starter MCP servers.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -23,44 +23,83 @@
       </nav>
       <div class="nav-actions">
         <a class="button-outline" href="https://github.com/megazear7/static-mcpify">GitHub</a>
-        <a class="button" href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify">Deploy</a>
+        <a class="button" href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=starters/netlify-static-starter">Deploy static starter</a>
       </div>
     </div>
   </header>
 
   <main class="container">
     <h1 class="page-title">Deploy static-mcpify on Netlify</h1>
-    <p class="page-subtitle">Use Netlify for the static brand site and serverless MCP endpoints.</p>
+    <p class="page-subtitle">Pick a starter, click deploy, and get a hosted MCP endpoint with sample content already wired up.</p>
 
     <section class="section card">
-      <h2>Deployment flow</h2>
+      <h2>Starter deploy buttons</h2>
+      <div class="grid grid-2">
+        <article class="card">
+          <div class="eyebrow">Static starter</div>
+          <h3>Filesystem content, zero CMS setup</h3>
+          <p>Deploy preloaded Markdown and JSON content with a Netlify Function already mapped to <code>/mcp</code>.</p>
+          <div class="meta-list">
+            <div><strong>Base directory:</strong> <code>starters/netlify-static-starter</code></div>
+            <div><strong>Endpoint:</strong> <code>/mcp</code></div>
+            <div><strong>Includes:</strong> <code>content/</code>, <code>netlify.toml</code>, function, landing page</div>
+          </div>
+          <div class="card-actions">
+            <a class="button" href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=starters/netlify-static-starter">Deploy static starter</a>
+            <a class="button-outline" href="https://github.com/megazear7/static-mcpify/tree/main/starters/netlify-static-starter">Browse starter</a>
+          </div>
+        </article>
+        <article class="card">
+          <div class="eyebrow">Contentful starter</div>
+          <h3>Sample content now, Contentful sync when ready</h3>
+          <p>Ship a working MCP server immediately, then set <code>CONTENTFUL_API_TOKEN</code> and <code>SPACE_ID</code> so Netlify rebuilds from your Contentful space.</p>
+          <div class="meta-list">
+            <div><strong>Base directory:</strong> <code>starters/netlify-contentful-starter</code></div>
+            <div><strong>Endpoint:</strong> <code>/mcp</code></div>
+            <div><strong>Build behavior:</strong> bundled sample content unless Contentful env vars are present</div>
+          </div>
+          <div class="card-actions">
+            <a class="button" href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=starters/netlify-contentful-starter">Deploy Contentful starter</a>
+            <a class="button-outline" href="https://github.com/megazear7/static-mcpify/tree/main/starters/netlify-contentful-starter">Browse starter</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section card">
+      <h2>Smooth deployment flow</h2>
       <div class="steps">
-        <div class="step"><span class="step-badge">1</span><div><strong>Connect repository</strong><p>Use the Netlify GitHub integration to link your repo.</p></div></div>
-        <div class="step"><span class="step-badge">2</span><div><strong>Set build command</strong><p><code>npm run build:ts && npm run build:contentful</code></p></div></div>
-        <div class="step"><span class="step-badge">3</span><div><strong>Publish directory</strong><p><code>netlify/brand</code></p></div></div>
-        <div class="step"><span class="step-badge">4</span><div><strong>Configure functions</strong><p>Point <code>[functions] directory</code> at <code>netlify/functions</code>.</p></div></div>
-        <div class="step"><span class="step-badge">5</span><div><strong>Add secrets</strong><p>Define <code>CONTENTFUL_API_TOKEN</code> and <code>SPACE_ID</code> in Netlify environment variables.</p></div></div>
+        <div class="step"><span class="step-badge">1</span><div><strong>Choose a starter</strong><p>Pick static/filesystem mode or the Contentful-ready starter.</p></div></div>
+        <div class="step"><span class="step-badge">2</span><div><strong>Click deploy</strong><p>Netlify uses the starter directory as the site base automatically.</p></div></div>
+        <div class="step"><span class="step-badge">3</span><div><strong>Use the hosted endpoint</strong><p>Your MCP server is immediately available at <code>/mcp</code>.</p></div></div>
+        <div class="step"><span class="step-badge">4</span><div><strong>Customize content</strong><p>Edit files in <code>content/</code> or, for Contentful, add credentials and let Netlify rebuild on deploy.</p></div></div>
       </div>
     </section>
 
     <section class="section">
-      <h2>Reference netlify.toml</h2>
+      <h2>Starter <code>netlify.toml</code> shape</h2>
       <pre class="code"><code>[build]
-publish = "netlify/brand"
-command = "node --version && npm --version && npm run build:ts && npm run build:contentful"
+publish = "public"
+command = "if [ -n \"$CONTENTFUL_API_TOKEN\" ] &amp;&amp; [ -n \"$SPACE_ID\" ]; then npm run build:contentful; else npm run build; fi"
 
 [functions]
 directory = "netlify/functions"
-node_bundler = "nft"</code></pre>
+node_bundler = "nft"
+
+[[redirects]]
+from = "/mcp"
+to = "/.netlify/functions/mcp"
+status = 200</code></pre>
+      <p>The static starter uses the same function and redirect shape, but skips the Contentful rebuild because its bundled filesystem content is already ready.</p>
     </section>
 
     <section class="section">
       <h2>Endpoint checklist</h2>
       <div class="grid grid-2">
-        <article class="card"><h3>GET health check</h3><p>Return <code>{"status":"ok"}</code> to verify function health quickly.</p></article>
-        <article class="card"><h3>POST MCP JSON-RPC</h3><p>Accept MCP requests at paths like <code>/example/static/mcp</code> and <code>/example/contentful/mcp</code>.</p></article>
+        <article class="card"><h3>GET health check</h3><p>Return starter metadata like <code>{"status":"ok","endpoint":"/mcp"}</code> so users can verify the function quickly.</p></article>
+        <article class="card"><h3>POST MCP JSON-RPC</h3><p>Accept MCP requests at <code>/mcp</code> with no additional routing work after deploy.</p></article>
       </div>
-      <p class="callout">This site is fully static and Netlify-ready: HTML + CSS in <code>netlify/brand</code> with no client build step required.</p>
+      <p class="callout">The new starter directories are self-contained Netlify bases, so users can launch from sample static files or a Contentful-ready scaffold without editing infrastructure first.</p>
     </section>
   </main>
 

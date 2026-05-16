@@ -1,0 +1,16 @@
+{
+  "contentType": "adventure",
+  "listTool": {
+    "description": "List all available adventures in the example fantasy world."
+  },
+  "includeMetadataTool": true,
+  "defaultTool": {
+    "fields": ["description"]
+  },
+  "tools": [
+    {
+      "name": "description",
+      "fields": ["description"]
+    }
+  ]
+}

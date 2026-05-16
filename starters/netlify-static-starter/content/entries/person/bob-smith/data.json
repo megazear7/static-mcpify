@@ -1,0 +1,25 @@
+{
+  "id": "person-001",
+  "contentType": "person",
+  "title": "Bob Smith",
+  "createdAt": "2024-01-15T10:30:00Z",
+  "updatedAt": "2024-06-20T14:45:00Z",
+  "name": "Bob Smith",
+  "role": "Senior Software Engineer",
+  "email": "bob.smith@example.com",
+  "location": "Portland, OR",
+  "skills": [
+    "TypeScript",
+    "JavaScript",
+    "React",
+    "Node.js",
+    "GraphQL",
+    "PostgreSQL",
+    "Docker",
+    "AWS",
+    "System Architecture",
+    "Technical Leadership"
+  ],
+  "yearsOfExperience": 15,
+  "website": "https://bobsmith.dev"
+}

@@ -1,0 +1,13 @@
+{
+  "contentType": "person",
+  "tools": [
+    {
+      "name": "biography",
+      "fields": ["biography"]
+    },
+    {
+      "name": "skills",
+      "fields": ["skills"]
+    }
+  ]
+}

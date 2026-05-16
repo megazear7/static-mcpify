@@ -35,9 +35,34 @@
         static-mcpify pulls content from CMS sources (including Contentful), writes static Markdown + JSON artifacts,
         then serves that content through MCP tools your AI agents can use immediately.
       </p>
-      <div class="nav-actions" style="margin-top: 1rem;">
+      <div class="button-row" style="margin-top: 1rem;">
         <a class="button" href="docs.html">Read docs</a>
-        <a class="button-outline" href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify">Deploy on Netlify</a>
+        <a class="button-outline" href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=starters/netlify-static-starter">Deploy static starter</a>
+        <a class="button-outline" href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=starters/netlify-contentful-starter">Deploy Contentful starter</a>
+      </div>
+    </section>
+
+    <section class="section container">
+      <h2>Instant deploy starters</h2>
+      <div class="grid grid-2">
+        <article class="card">
+          <div class="eyebrow">Static/filesystem mode</div>
+          <h3>Deploy bundled sample content</h3>
+          <p>Start with sample Markdown and JSON already loaded, a ready `/mcp` endpoint, and no CMS credentials required.</p>
+          <div class="card-actions">
+            <a class="button" href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=starters/netlify-static-starter">Deploy static starter</a>
+            <a class="button-outline" href="https://github.com/megazear7/static-mcpify/tree/main/starters/netlify-static-starter">View starter files</a>
+          </div>
+        </article>
+        <article class="card">
+          <div class="eyebrow">Contentful mode</div>
+          <h3>Deploy now, connect Contentful later</h3>
+          <p>Ship prebuilt sample content immediately, then add <code>CONTENTFUL_API_TOKEN</code> and <code>SPACE_ID</code> to rebuild from your own space.</p>
+          <div class="card-actions">
+            <a class="button" href="https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=starters/netlify-contentful-starter">Deploy Contentful starter</a>
+            <a class="button-outline" href="https://github.com/megazear7/static-mcpify/tree/main/starters/netlify-contentful-starter">View starter files</a>
+          </div>
+        </article>
       </div>
     </section>
 

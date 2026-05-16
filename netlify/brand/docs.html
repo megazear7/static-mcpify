@@ -33,6 +33,21 @@
     <p class="page-subtitle">How to install, initialize, build, and serve with <code>static-mcpify</code>.</p>
 
     <section class="section">
+      <h2>Fastest Netlify path</h2>
+      <div class="grid grid-2">
+        <article class="card">
+          <h3>Static starter</h3>
+          <p>Use <code>starters/netlify-static-starter</code> when you want bundled filesystem content and an instant <code>/mcp</code> endpoint.</p>
+        </article>
+        <article class="card">
+          <h3>Contentful starter</h3>
+          <p>Use <code>starters/netlify-contentful-starter</code> when you want bundled sample content now and Contentful-driven rebuilds later.</p>
+        </article>
+      </div>
+      <p class="callout">The deploy page has direct Netlify buttons for both starter directories so users do not need to wire <code>netlify.toml</code>, redirects, or function paths manually.</p>
+    </section>
+
+    <section class="section">
       <h2>Install</h2>
       <pre class="code"><code>npm install static-mcpify</code></pre>
       <p>Set Contentful credentials in a <code>.env</code> file if you are using the Contentful adapter.</p>

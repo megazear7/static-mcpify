@@ -85,6 +85,12 @@ code {
   gap: 0.55rem;
 }
 
+.button-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .button,
 .button-outline {
   border-radius: 999px;
@@ -172,6 +178,31 @@ main {
   padding: 0.8rem 1rem;
   background: rgba(111, 124, 255, 0.08);
   border-radius: 8px;
+}
+
+.eyebrow {
+  color: var(--accent-2);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.meta-list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+}
+
+.meta-list strong {
+  color: var(--text);
 }
 
 .code {

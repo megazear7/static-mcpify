@@ -1,0 +1,15 @@
+{
+  "name": "static-mcpify-netlify-contentful-starter",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node --eval \"console.log('using bundled contentful sample content')\"",
+    "build:contentful": "npx smcp build --output ."
+  },
+  "dependencies": {
+    "static-mcpify": "^1.1.4"
+  }
+}
