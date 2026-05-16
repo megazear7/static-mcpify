@@ -1,0 +1,11 @@
+{
+  "name": "static-mcpify-netlify-contentful-starter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node ./scripts/build-content.mjs"
+  },
+  "dependencies": {
+    "static-mcpify": "^1.1.4"
+  }
+}

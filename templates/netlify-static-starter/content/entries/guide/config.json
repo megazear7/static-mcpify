@@ -1,0 +1,17 @@
+{
+  "contentType": "guide",
+  "listTool": {
+    "description": "List the starter guides available in this static MCP server."
+  },
+  "includeMetadataTool": true,
+  "defaultTool": {
+    "description": "Get the overview for a specific starter guide.",
+    "fields": ["summary"]
+  },
+  "tools": [
+    {
+      "name": "checklist",
+      "fields": ["checklist"]
+    }
+  ]
+}

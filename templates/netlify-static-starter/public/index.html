@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>static-mcpify static starter</title>
+  <style>
+    body { font-family: Inter, system-ui, sans-serif; margin: 0; background: #0f172a; color: #e2e8f0; }
+    main { max-width: 48rem; margin: 0 auto; padding: 4rem 1.5rem; }
+    .card { background: #111c3a; border: 1px solid #334155; border-radius: 1rem; padding: 1.5rem; margin-top: 1rem; }
+    code, pre { font-family: "JetBrains Mono", monospace; }
+    pre { white-space: pre-wrap; background: #020617; padding: 1rem; border-radius: 0.75rem; overflow: auto; }
+    a { color: #7dd3fc; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>static-mcpify static starter</h1>
+    <p>This Netlify site exposes a ready-to-use MCP endpoint backed by files in <code>content/</code>.</p>
+    <div class="card">
+      <h2>Endpoint</h2>
+      <pre><code>GET /mcp   -> {"status":"ok","server":"static-mcp-starter"}
+POST /mcp  -> MCP JSON-RPC requests</code></pre>
+    </div>
+    <div class="card">
+      <h2>VS Code MCP config</h2>
+      <pre><code>{
+  "static-mcpify-starter": {
+    "type": "http",
+    "url": "https://YOUR-SITE.netlify.app/mcp"
+  }
+}</code></pre>
+    </div>
+  </main>
+</body>
+</html>

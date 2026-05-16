@@ -10,6 +10,15 @@ Turn any structured content into a static **MCP (Model Context Protocol)** serve
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify)
 
+## Netlify Starter Templates
+
+Choose a starter that deploys a functional MCP server immediately:
+
+- **Static/filesystem starter** — checked-in sample content, no CMS required, endpoint auto-configured at `/mcp`  
+  [Deploy starter](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=templates/netlify-static-starter) · [View files](https://github.com/megazear7/static-mcpify/tree/main/templates/netlify-static-starter)
+- **Contentful starter** — checked-in sample content for instant deploys, optional rebuild from your own Contentful space when `CONTENTFUL_API_TOKEN` and `SPACE_ID` are set  
+  [Deploy starter](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=templates/netlify-contentful-starter) · [View files](https://github.com/megazear7/static-mcpify/tree/main/templates/netlify-contentful-starter)
+
 ## Quick Start
 
 ### 1. Install

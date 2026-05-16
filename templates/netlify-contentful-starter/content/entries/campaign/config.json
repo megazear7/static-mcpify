@@ -1,0 +1,17 @@
+{
+  "contentType": "campaign",
+  "listTool": {
+    "description": "List the sample campaigns currently loaded in this starter."
+  },
+  "includeMetadataTool": true,
+  "defaultTool": {
+    "description": "Get the primary campaign overview for a specific title.",
+    "fields": ["overview"]
+  },
+  "tools": [
+    {
+      "name": "briefing",
+      "fields": ["briefing"]
+    }
+  ]
+}

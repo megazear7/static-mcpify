@@ -1,0 +1,8 @@
+{
+  "id": "campaign-silver-keep",
+  "contentType": "campaign",
+  "title": "Silver Keep",
+  "overview": "A sample campaign entry that demonstrates the Contentful starter before credentials are connected.",
+  "briefing": "The party defends a fortified city while mysterious clockwork scouts probe the walls.",
+  "status": "sample"
+}

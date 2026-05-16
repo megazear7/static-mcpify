@@ -1,0 +1,5 @@
+{
+  "name": "contentful-template-manifest",
+  "description": "Sample asset metadata that ships with the Contentful starter.",
+  "rebuildInstructions": "Set CONTENTFUL_API_TOKEN and SPACE_ID to rebuild from your own space."
+}

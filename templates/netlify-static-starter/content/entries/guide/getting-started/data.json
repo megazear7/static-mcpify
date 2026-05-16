@@ -1,0 +1,10 @@
+{
+  "title": "Getting Started",
+  "summary": "A sample guide that explains how this static MCP starter is organized.",
+  "checklist": [
+    "Replace the sample guide markdown.",
+    "Add your own entry folders.",
+    "Deploy and connect your MCP client to /mcp."
+  ],
+  "audience": "builders"
+}

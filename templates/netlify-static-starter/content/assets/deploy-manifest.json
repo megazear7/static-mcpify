@@ -1,0 +1,5 @@
+{
+  "name": "deploy-manifest",
+  "description": "Starter assets can be exposed through get_asset tools just like entry content.",
+  "endpoint": "/mcp"
+}

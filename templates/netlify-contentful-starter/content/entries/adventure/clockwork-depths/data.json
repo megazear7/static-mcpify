@@ -1,0 +1,12 @@
+{
+  "id": "adventure-clockwork-depths",
+  "contentType": "adventure",
+  "title": "Clockwork Depths",
+  "summary": "A sample adventure entry that is ready to serve on the first deploy.",
+  "rewards": [
+    "Encrypted map fragments",
+    "A repaired sentinel companion",
+    "Access to the lower vault"
+  ],
+  "difficulty": "medium"
+}

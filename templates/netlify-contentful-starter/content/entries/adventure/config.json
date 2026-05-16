@@ -1,0 +1,17 @@
+{
+  "contentType": "adventure",
+  "listTool": {
+    "description": "List the sample adventures currently loaded in this starter."
+  },
+  "includeMetadataTool": true,
+  "defaultTool": {
+    "description": "Get the primary adventure summary for a specific title.",
+    "fields": ["summary"]
+  },
+  "tools": [
+    {
+      "name": "rewards",
+      "fields": ["rewards"]
+    }
+  ]
+}
