@@ -123,6 +123,8 @@ async function main(): Promise<void> {
   assert.match(contentfulStarterFunction, /path:\s*'\/mcp'/);
   assert.match(staticStarterToml, /from = "\/mcp"/);
   assert.match(contentfulStarterToml, /from = "\/mcp"/);
+  assert.match(staticStarterToml, /base = "\."/);
+  assert.match(contentfulStarterToml, /base = "\."/);
   assert.match(contentfulStarterToml, /CONTENTFUL_API_TOKEN/);
 
   assert.match(readme, /base=starters\/netlify-static-starter/);

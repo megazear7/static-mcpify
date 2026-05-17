@@ -1,4 +1,5 @@
 [build]
+  base = "."
   publish = "public"
   command = "if [ -n \"$CONTENTFUL_API_TOKEN\" ] && [ -n \"$SPACE_ID\" ]; then npm run build:contentful; else npm run build; fi"
 
