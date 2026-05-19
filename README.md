@@ -320,7 +320,7 @@ npm run build:ts
 The project deploys to [static-mcpify.alexlockhart.me](https://static-mcpify.alexlockhart.me/) via Netlify.
 
 - Pushes to `main` trigger automatic deploys
-- Build command: `npm run build:ts && npm run build:contentful`
+- Build command: `npm run build:ts` plus `npm run build:contentful` only when `CONTENTFUL_API_TOKEN` and `SPACE_ID` are set
 - `node_bundler = "nft"` (Node File Tracing) resolves workspace packages in functions
 - Environment variables `CONTENTFUL_API_TOKEN` and `SPACE_ID` are set as secrets on Netlify
 
