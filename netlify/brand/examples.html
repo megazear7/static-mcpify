@@ -30,7 +30,7 @@
 
   <main class="container">
     <h1 class="page-title">Example walkthroughs</h1>
-    <p class="page-subtitle">Step-by-step guides for both shipped examples.</p>
+    <p class="page-subtitle">Step-by-step guides for the shipped examples and their ready-to-deploy starter counterparts.</p>
 
     <section class="section card">
       <h2>Static filesystem example</h2>
@@ -40,6 +40,7 @@
         <div class="step"><span class="step-badge">2</span><div><strong>Run the standalone server</strong><p><code>tsx module/src/server/standalone.ts examples/static/content 3100</code></p></div></div>
         <div class="step"><span class="step-badge">3</span><div><strong>Connect your MCP client</strong><p>Point client URL to <code>http://localhost:3100/mcp</code>.</p></div></div>
       </div>
+      <p class="callout">Want the Netlify version immediately? Use <code>starters/netlify-static-starter</code> for the same content shape plus a prewired <code>/mcp</code> deploy button.</p>
       <pre class="code"><code>{
   "static-example": {
     "type": "http",
@@ -56,6 +57,7 @@
         <div class="step"><span class="step-badge">2</span><div><strong>Build content</strong><p>Run <code>npm run build:contentful</code> to generate output in <code>examples/contentful/content</code>.</p></div></div>
         <div class="step"><span class="step-badge">3</span><div><strong>Serve endpoint</strong><p>Use Netlify function route <code>/example/contentful/mcp</code>.</p></div></div>
       </div>
+      <p class="callout">Use <code>starters/netlify-contentful-starter</code> to deploy bundled sample content first, then add Contentful credentials later for automated rebuilds.</p>
       <pre class="code"><code>{
   "contentful-example": {
     "type": "http",

@@ -1,0 +1,12 @@
+[build]
+  base = "."
+  publish = "public"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "nft"
+
+[[redirects]]
+  from = "/mcp"
+  to = "/.netlify/functions/mcp"
+  status = 200

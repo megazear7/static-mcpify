@@ -1,0 +1,9 @@
+{
+  "contentType": "place",
+  "tools": [
+    {
+      "name": "description",
+      "fields": ["description"]
+    }
+  ]
+}

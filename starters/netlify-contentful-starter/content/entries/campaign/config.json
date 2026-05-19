@@ -1,0 +1,6 @@
+{
+  "contentType": "campaign",
+  "defaultTool": {
+    "fields": ["description"]
+  }
+}

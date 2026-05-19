@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>static-mcpify Contentful starter</title>
+  <style>
+    body { margin: 0; font-family: Inter, Arial, sans-serif; background: #090b14; color: #e8ecff; }
+    main { max-width: 760px; margin: 0 auto; padding: 3rem 1.5rem; }
+    .card { background: #11162a; border: 1px solid #232c46; border-radius: 16px; padding: 1.25rem; }
+    a { color: #39d2ff; }
+    code, pre { font-family: 'JetBrains Mono', monospace; }
+    pre { overflow-x: auto; background: #070a14; border-radius: 12px; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="card">
+      <h1>⚡ static-mcpify Contentful starter</h1>
+      <p>This starter ships with sample Contentful-shaped content and can rebuild from your own Contentful space.</p>
+      <p><strong>MCP endpoint:</strong> <a href="/mcp">/mcp</a></p>
+      <pre><code>{
+  "static-mcpify-contentful": {
+    "type": "http",
+    "url": "https://your-site.netlify.app/mcp"
+  }
+}</code></pre>
+      <p>The bundled sample content is served by default. To rebuild from Contentful on deploy, add <code>CONTENTFUL_API_TOKEN</code> and <code>SPACE_ID</code> as Netlify environment variables.</p>
+    </div>
+  </main>
+</body>
+</html>
