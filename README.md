@@ -8,13 +8,13 @@ Turn any structured content into a static **MCP (Model Context Protocol)** serve
 
 **[Website](https://static-mcpify.alexlockhart.me/)** · **[Docs](https://static-mcpify.alexlockhart.me/docs.html)** · **[Examples](https://static-mcpify.alexlockhart.me/examples.html)** · **[Deploy Guide](https://static-mcpify.alexlockhart.me/deploy.html)** · **[npm](https://www.npmjs.com/package/static-mcpify)** · **[GitHub](https://github.com/megazear7/static-mcpify)**
 
-[![Deploy static starter to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=starters/netlify-static-starter)
-[![Deploy Contentful starter to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=starters/netlify-contentful-starter)
+[![Deploy static starter to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&create_from_path=starters/netlify-static-starter)
+[![Deploy Contentful starter to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&create_from_path=starters/netlify-contentful-starter)
 
 ## Netlify Starter Templates
 
-- **Static/filesystem starter:** deploys bundled sample Markdown/JSON content immediately from `starters/netlify-static-starter`
-- **Contentful starter:** deploys bundled sample content immediately and rebuilds from Contentful when `CONTENTFUL_API_TOKEN` and `SPACE_ID` are configured in `starters/netlify-contentful-starter`
+- **Static/filesystem starter:** creates a new repo from `starters/netlify-static-starter` and deploys bundled sample Markdown/JSON content immediately
+- **Contentful starter:** creates a new repo from `starters/netlify-contentful-starter`, deploys bundled sample content immediately, and rebuilds from Contentful when `CONTENTFUL_API_TOKEN` and `SPACE_ID` are configured
 - Both starters auto-wire a Netlify Function at `/mcp`, ship a `netlify.toml`, and include a small landing page plus sample MCP client JSON
 
 ## Quick Start
