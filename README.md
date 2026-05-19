@@ -8,7 +8,7 @@ Turn any structured content into a static **MCP (Model Context Protocol)** serve
 
 **[Website](https://static-mcpify.alexlockhart.me/)** · **[Docs](https://static-mcpify.alexlockhart.me/docs.html)** · **[Examples](https://static-mcpify.alexlockhart.me/examples.html)** · **[Deploy Guide](https://static-mcpify.alexlockhart.me/deploy.html)** · **[npm](https://www.npmjs.com/package/static-mcpify)** · **[GitHub](https://github.com/megazear7/static-mcpify)**
 
-[![Deploy static starter to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=starters/netlify-static-starter)
+[![Deploy static starter to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify-static-example)
 [![Deploy Contentful starter to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/megazear7/static-mcpify&base=starters/netlify-contentful-starter)
 
 ## Netlify Starter Templates
