@@ -1,6 +1,6 @@
 [build]
   publish = "netlify/brand"
-  command = "node --version && npm --version && npm run build:ts && npm run build:contentful"
+  command = "node --version && npm --version && npm run build:ts && if [ -n \"$CONTENTFUL_API_TOKEN\" ] && [ -n \"$SPACE_ID\" ]; then npm run build:contentful; else echo 'Skipping Contentful rebuild (CONTENTFUL_API_TOKEN/SPACE_ID not set).'; fi"
 
 [build.environment]
   NODE_VERSION = "22"

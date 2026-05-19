@@ -113,6 +113,7 @@ async function main(): Promise<void> {
   const contentfulStarterFunction = read('starters/netlify-contentful-starter/netlify/functions/mcp.js');
   const staticStarterToml = read('starters/netlify-static-starter/netlify.toml');
   const contentfulStarterToml = read('starters/netlify-contentful-starter/netlify.toml');
+  const rootNetlifyToml = read('netlify.toml');
   const readme = read('README.md');
   const brandIndex = read('netlify/brand/index.html');
   const brandDeploy = read('netlify/brand/deploy.html');
@@ -126,6 +127,8 @@ async function main(): Promise<void> {
   assert.match(staticStarterToml, /base = "\."/);
   assert.match(contentfulStarterToml, /base = "\."/);
   assert.match(contentfulStarterToml, /CONTENTFUL_API_TOKEN/);
+  assert.match(rootNetlifyToml, /CONTENTFUL_API_TOKEN/);
+  assert.match(rootNetlifyToml, /SPACE_ID/);
 
   assert.match(readme, /base=starters\/netlify-static-starter/);
   assert.match(readme, /base=starters\/netlify-contentful-starter/);
