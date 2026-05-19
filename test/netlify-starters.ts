@@ -130,12 +130,10 @@ async function main(): Promise<void> {
   assert.match(rootNetlifyToml, /CONTENTFUL_API_TOKEN/);
   assert.match(rootNetlifyToml, /SPACE_ID/);
 
-  assert.match(readme, /repository=https:\/\/github\.com\/megazear7\/static-mcpify-static-example/);
+  assert.match(readme, /base=starters\/netlify-static-starter/);
   assert.match(readme, /base=starters\/netlify-contentful-starter/);
   assert.match(brandIndex, /Deploy static starter/);
   assert.match(brandIndex, /Deploy Contentful starter/);
-  assert.match(brandIndex, /repository=https:\/\/github\.com\/megazear7\/static-mcpify-static-example/);
-  assert.match(brandDeploy, /repository=https:\/\/github\.com\/megazear7\/static-mcpify-static-example/);
   assert.match(brandDeploy, /starters\/netlify-static-starter/);
   assert.match(brandDeploy, /starters\/netlify-contentful-starter/);
   assert.match(brandDocs, /Fastest Netlify path/);
